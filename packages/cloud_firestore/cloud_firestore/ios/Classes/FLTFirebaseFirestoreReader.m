@@ -299,7 +299,7 @@
     }
 
     FIRFirestore *firestore = [FIRFirestore firestoreForApp:app database:databaseUrl];
-    firestore.settings = settings;
+    // firestore.settings = settings; // To avoid crashes
 
     [FLTFirebaseFirestoreUtils setCachedFIRFirestoreInstance:firestore
                                                   forAppName:app.name
