@@ -6,6 +6,7 @@
 import 'dart:async';
 
 import 'package:cloud_firestore_platform_interface/cloud_firestore_platform_interface.dart';
+import 'package:cloud_firestore_platform_interface/src/method_channel/utils/exception.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 
@@ -16,18 +17,18 @@ import 'method_channel_firestore.dart';
 class MethodChannelTransaction extends TransactionPlatform {
   /// [FirebaseApp] name used for this [MethodChannelTransaction]
   final String appName;
-  final String databaseURL;
+  final String databaseId;
   late String _transactionId;
   late FirebaseFirestorePlatform _firestore;
   FirestorePigeonFirebaseApp pigeonApp;
 
   /// Constructor.
   MethodChannelTransaction(
-      String transactionId, this.appName, this.pigeonApp, this.databaseURL)
+      String transactionId, this.appName, this.pigeonApp, this.databaseId)
       : _transactionId = transactionId,
         super() {
     _firestore = FirebaseFirestorePlatform.instanceFor(
-        app: Firebase.app(appName), databaseURL: databaseURL);
+        app: Firebase.app(appName), databaseId: databaseId);
   }
 
   List<PigeonTransactionCommand> _commands = [];
@@ -45,16 +46,19 @@ class MethodChannelTransaction extends TransactionPlatform {
   Future<DocumentSnapshotPlatform> get(String documentPath) async {
     assert(_commands.isEmpty,
         'Transactions require all reads to be executed before all writes.');
+    try {
+      final result = await MethodChannelFirebaseFirestore.pigeonChannel
+          .transactionGet(pigeonApp, _transactionId, documentPath);
 
-    final result = await MethodChannelFirebaseFirestore.pigeonChannel
-        .transactionGet(pigeonApp, _transactionId, documentPath);
-
-    return DocumentSnapshotPlatform(
-      _firestore,
-      documentPath,
-      result.data,
-      result.metadata,
-    );
+      return DocumentSnapshotPlatform(
+        _firestore,
+        documentPath,
+        result.data,
+        result.metadata,
+      );
+    } catch (e, stack) {
+      convertPlatformException(e, stack);
+    }
   }
 
   @override

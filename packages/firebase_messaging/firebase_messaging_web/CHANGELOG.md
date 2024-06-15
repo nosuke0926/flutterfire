@@ -1,3 +1,101 @@
+## 3.8.9
+
+ - Update a dependency to the latest release.
+
+## 3.8.8
+
+ - **FIX**(web): fix some casting issue on Web JS Interop ([#12852](https://github.com/firebase/flutterfire/issues/12852)). ([4b56df1c](https://github.com/firebase/flutterfire/commit/4b56df1cc187d77ef22a82688a37f1c7aba4ed40))
+
+## 3.8.7
+
+ - Update a dependency to the latest release.
+
+## 3.8.6
+
+ - Update a dependency to the latest release.
+
+## 3.8.5
+
+ - Update a dependency to the latest release.
+
+## 3.8.4
+
+ - Update a dependency to the latest release.
+
+## 3.8.3
+
+ - Update a dependency to the latest release.
+
+## 3.8.2
+
+ - Update a dependency to the latest release.
+
+## 3.8.1
+
+ - **FIX**(messaging,web): `MessagePayload.data` can be `null` ([#12605](https://github.com/firebase/flutterfire/issues/12605)). ([95b95601](https://github.com/firebase/flutterfire/commit/95b9560189da0fa7fb1478988983e4a6af070c04))
+ - **FIX**(messaging,web): Fix incorrect type casting. ([#12573](https://github.com/firebase/flutterfire/issues/12573)). ([153ba0d5](https://github.com/firebase/flutterfire/commit/153ba0d54a243c9605e9e3841fce18566cb0f145))
+
+## 3.8.0
+
+ - **FEAT**(web): remove the dependency on `package:js` in favor of `dart:js_interop` ([#12534](https://github.com/firebase/flutterfire/issues/12534)). ([d83f6327](https://github.com/firebase/flutterfire/commit/d83f632753707c974fef2ac8a7f9bf6cb8ba8758))
+
+## 3.7.1
+
+ - Update a dependency to the latest release.
+
+## 3.7.0
+
+ - **FEAT**: update `web` package to 0.5.1 ([#12469](https://github.com/firebase/flutterfire/issues/12469)). ([f5c4354a](https://github.com/firebase/flutterfire/commit/f5c4354a66377da9d231c5e3fc7e955ddb7ef8cf))
+
+## 3.6.8
+
+ - Update a dependency to the latest release.
+
+## 3.6.7
+
+ - Update a dependency to the latest release.
+
+## 3.6.6
+
+ - Update a dependency to the latest release.
+
+## 3.6.5
+
+ - Update a dependency to the latest release.
+
+## 3.6.4
+
+ - Update a dependency to the latest release.
+
+## 3.6.3
+
+ - Update a dependency to the latest release.
+
+## 3.6.2
+
+ - Update a dependency to the latest release.
+
+## 3.6.1
+
+ - Update a dependency to the latest release.
+
+## 3.6.0
+
+ - **FEAT**(messaging,web): migrate web to js_interop to be compatible with WASM ([#12223](https://github.com/firebase/flutterfire/issues/12223)). ([6ada2379](https://github.com/firebase/flutterfire/commit/6ada2379f22be7051364670471244330f2528bcb))
+ - **DOCS**: change old documentation links of packages in README files ([#12136](https://github.com/firebase/flutterfire/issues/12136)). ([24b9ac7e](https://github.com/firebase/flutterfire/commit/24b9ac7ec29fc9ca466c0941c2cff26d75b8568d))
+
+## 3.5.18
+
+ - Update a dependency to the latest release.
+
+## 3.5.17
+
+ - Update a dependency to the latest release.
+
+## 3.5.16
+
+ - **FIX**(messaging): fix an issue where Service Worker would not register in time ([#11979](https://github.com/firebase/flutterfire/issues/11979)). ([4752efb6](https://github.com/firebase/flutterfire/commit/4752efb6dba0634c1f60e68ac8ae6d3fdcaa83ea))
+
 ## 3.5.15
 
  - Update a dependency to the latest release.

@@ -59,25 +59,38 @@ FirebaseException platformExceptionToFirebaseAuthException(
     }
 
     AuthCredential? credential;
+    String? email;
 
-    if (platformException.details != null &&
-        platformException.details['authCredential'] != null &&
-        platformException.details['authCredential'] is PigeonAuthCredential) {
-      PigeonAuthCredential pigeonAuthCredential =
-          platformException.details['authCredential'];
+    if (platformException.details != null) {
+      if (platformException.details['authCredential'] != null &&
+          platformException.details['authCredential'] is PigeonAuthCredential) {
+        PigeonAuthCredential pigeonAuthCredential =
+            platformException.details['authCredential'];
 
-      credential = AuthCredential(
-        providerId: pigeonAuthCredential.providerId,
-        signInMethod: pigeonAuthCredential.signInMethod,
-        token: pigeonAuthCredential.nativeId,
-        accessToken: pigeonAuthCredential.accessToken,
-      );
+        credential = AuthCredential(
+          providerId: pigeonAuthCredential.providerId,
+          signInMethod: pigeonAuthCredential.signInMethod,
+          token: pigeonAuthCredential.nativeId,
+          accessToken: pigeonAuthCredential.accessToken,
+        );
+      }
+
+      if (platformException.details['email'] != null) {
+        email = platformException.details['email'];
+      }
+    }
+
+    var parsedMessage = platformException.message?.split(': ').last;
+    if (parsedMessage?.endsWith(' ]') ?? false) {
+      // Fixes JSON response from Auth blocking function: https://github.com/firebase/flutterfire/issues/11532
+      parsedMessage = parsedMessage!.substring(0, parsedMessage.length - 2);
     }
 
     return FirebaseAuthException(
       code: code,
-      message: platformException.message?.split(': ').last,
+      message: parsedMessage,
       credential: credential,
+      email: email,
     );
   }
 

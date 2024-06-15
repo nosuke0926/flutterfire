@@ -1,3 +1,101 @@
+## 7.4.0
+
+ - **FEAT**(auth,apple): create a credential with `idToken`, `rawNonce` & `appleFullPersonName` ([#12356](https://github.com/firebase/flutterfire/issues/12356)). ([17793080](https://github.com/firebase/flutterfire/commit/177930802ca13a3af1610968e54b8ce79f0781ca))
+
+## 7.3.1
+
+ - Update a dependency to the latest release.
+
+## 7.3.0
+
+ - **FEAT**(auth): update Pigeon version to 19 ([#12828](https://github.com/firebase/flutterfire/issues/12828)). ([5e76153f](https://github.com/firebase/flutterfire/commit/5e76153fbcd337a26e83abc2b43b651ab6c501bc))
+
+## 7.2.7
+
+ - Update a dependency to the latest release.
+
+## 7.2.6
+
+ - Update a dependency to the latest release.
+
+## 7.2.5
+
+ - Update a dependency to the latest release.
+
+## 7.2.4
+
+ - Update a dependency to the latest release.
+
+## 7.2.3
+
+ - Update a dependency to the latest release.
+
+## 7.2.2
+
+ - Update a dependency to the latest release.
+
+## 7.2.1
+
+ - Update a dependency to the latest release.
+
+## 7.2.0
+
+ - **FEAT**(firebase_auth): add custom auth domain setter to Firebase Auth ([#12218](https://github.com/firebase/flutterfire/issues/12218)). ([e1297800](https://github.com/firebase/flutterfire/commit/e12978009e0fd785f267db560972ab0bbe021fcb))
+
+## 7.1.9
+
+ - Update a dependency to the latest release.
+
+## 7.1.8
+
+ - Update a dependency to the latest release.
+
+## 7.1.7
+
+ - Update a dependency to the latest release.
+
+## 7.1.6
+
+ - Update a dependency to the latest release.
+
+## 7.1.5
+
+ - Update a dependency to the latest release.
+
+## 7.1.4
+
+ - Update a dependency to the latest release.
+
+## 7.1.3
+
+ - Update a dependency to the latest release.
+
+## 7.1.2
+
+ - Update a dependency to the latest release.
+
+## 7.1.1
+
+ - Update a dependency to the latest release.
+
+## 7.1.0
+
+ - **FIX**(firebase_auth): Fix `PlatformException` to `FirebaseAuthException` error message parsing ([#11533](https://github.com/firebase/flutterfire/issues/11533)). ([8fe8cfde](https://github.com/firebase/flutterfire/commit/8fe8cfdec3516b1739c8d1ba341d36d8b9729771))
+ - **FEAT**(auth,apple): Game Center sign-in support ([#12228](https://github.com/firebase/flutterfire/issues/12228)). ([ac625ec7](https://github.com/firebase/flutterfire/commit/ac625ec7a2ceb8c7ef78180f3bcaa8294cf06a2e))
+ - **FEAT**(auth,android): Play Games provider sign-in support ([#12201](https://github.com/firebase/flutterfire/issues/12201)). ([1fb9019d](https://github.com/firebase/flutterfire/commit/1fb9019de1fd832223aa56139d98c1194b2d5efa))
+
+## 7.0.9
+
+ - **FIX**(auth): return email address if one is returned by the auth exception ([#11978](https://github.com/firebase/flutterfire/issues/11978)). ([ceee304d](https://github.com/firebase/flutterfire/commit/ceee304dd87cd66e34a7f7fa67c9961b72c10e72))
+
+## 7.0.8
+
+ - Update a dependency to the latest release.
+
+## 7.0.7
+
+ - Update a dependency to the latest release.
+
 ## 7.0.6
 
  - Update a dependency to the latest release.

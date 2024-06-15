@@ -1,4 +1,4 @@
-[<img src="https://raw.githubusercontent.com/firebase/flutterfire/master/resources/flutter_favorite.png" width="200" />](https://flutter.dev/docs/development/packages-and-plugins/favorites)
+[<img src="https://raw.githubusercontent.com/firebase/flutterfire/master/.github/images/flutter_favorite.png" width="200" />](https://flutter.dev/docs/development/packages-and-plugins/favorites)
 
 # Firebase Messaging Plugin for Flutter
 
@@ -10,7 +10,7 @@ To learn more about Firebase Cloud Messaging, please visit the [Firebase website
 
 ## Getting Started
 
-To get started with Firebase Cloud Messaging for Flutter, please [see the documentation](https://firebase.flutter.dev/docs/messaging/overview).
+To get started with Firebase Cloud Messaging for Flutter, please [see the documentation](https://firebase.google.com/docs/cloud-messaging).
 
 ## Usage
 

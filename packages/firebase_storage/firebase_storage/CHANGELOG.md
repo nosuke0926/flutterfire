@@ -1,3 +1,110 @@
+## 12.0.1
+
+ - Update a dependency to the latest release.
+
+## 12.0.0
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **REFACTOR**: android plugins require `minSdk 21`, auth requires `minSdk 23` ahead of android BOM `>=33.0.0` ([#12873](https://github.com/firebase/flutterfire/issues/12873)). ([52accfc6](https://github.com/firebase/flutterfire/commit/52accfc6c39d6360d9c0f36efe369ede990b7362))
+ - **BREAKING** **REFACTOR**: bump all iOS deployment targets to iOS 13 ahead of Firebase iOS SDK `v11` breaking change ([#12872](https://github.com/firebase/flutterfire/issues/12872)). ([de0cea2c](https://github.com/firebase/flutterfire/commit/de0cea2c3c36694a76361be784255986fac84a43))
+ - **BREAKING** **REFACTOR**(storage): remove deprecated API ahead of breaking change ([#12863](https://github.com/firebase/flutterfire/issues/12863)). ([aaf01ac5](https://github.com/firebase/flutterfire/commit/aaf01ac5488e4d599f42f361f9a51f1297dce7c3))
+
+## 11.7.7
+
+ - **FIX**(storage): do not set metadata property unless it has a value ([#12805](https://github.com/firebase/flutterfire/issues/12805)). ([978a87db](https://github.com/firebase/flutterfire/commit/978a87db70218d63abbf0c6bf22e9d00633b5d83))
+
+## 11.7.6
+
+ - **FIX**(storage,windows): putFile(), putString(), putData() & Task streaming event fixes ([#12723](https://github.com/firebase/flutterfire/issues/12723)). ([de69e07a](https://github.com/firebase/flutterfire/commit/de69e07a36a9e2ce967d9f4470f4a14e987abf53))
+
+## 11.7.5
+
+ - Update a dependency to the latest release.
+
+## 11.7.4
+
+ - Update a dependency to the latest release.
+
+## 11.7.3
+
+ - **FIX**(storage): pass StorageMetadata as nullable for `putFile()` API. Metadata ought to be inferred from File. ([#12612](https://github.com/firebase/flutterfire/issues/12612)). ([e75d134f](https://github.com/firebase/flutterfire/commit/e75d134faef2cbf156d8936fa3f1c8c69cd59ec2))
+
+## 11.7.2
+
+ - Update a dependency to the latest release.
+
+## 11.7.1
+
+ - **FIX**(web): remove remaining references to `dart:html` ([#12601](https://github.com/firebase/flutterfire/issues/12601)). ([fbffedb6](https://github.com/firebase/flutterfire/commit/fbffedb65c180d29a07436af90b36ca56e97bfe7))
+
+## 11.7.0
+
+ - **FEAT**(android): Bump `compileSdk` version of Android plugins to latest stable (34) ([#12566](https://github.com/firebase/flutterfire/issues/12566)). ([e891fab2](https://github.com/firebase/flutterfire/commit/e891fab291e9beebc223000b133a6097e066a7fc))
+
+## 11.6.11
+
+ - Update a dependency to the latest release.
+
+## 11.6.10
+
+ - Update a dependency to the latest release.
+
+## 11.6.9
+
+ - Update a dependency to the latest release.
+
+## 11.6.8
+
+ - Update a dependency to the latest release.
+
+## 11.6.7
+
+ - **FIX**(storage): `Task.cancel()` method wasn't properly updating `task.snapshot` and `cancel()` wasn't working in certain conditions. ([#12322](https://github.com/firebase/flutterfire/issues/12322)). ([c3ca5d10](https://github.com/firebase/flutterfire/commit/c3ca5d101b735e2203ca3d4e52f0b457794b3a47))
+
+## 11.6.6
+
+ - Update a dependency to the latest release.
+
+## 11.6.5
+
+ - Update a dependency to the latest release.
+
+## 11.6.4
+
+ - Update a dependency to the latest release.
+
+## 11.6.3
+
+ - Update a dependency to the latest release.
+
+## 11.6.2
+
+ - Update a dependency to the latest release.
+
+## 11.6.1
+
+ - **FIX**(storage,windows): `getData()` crash has been fixed ([#12185](https://github.com/firebase/flutterfire/issues/12185)). ([ed8c7c51](https://github.com/firebase/flutterfire/commit/ed8c7c51d28398b1f68af404bdd855b75a1b1f56))
+ - **FIX**(storage): ensure Task listeners correctly propagate exceptions and close properly. ([#12160](https://github.com/firebase/flutterfire/issues/12160)). ([759684b1](https://github.com/firebase/flutterfire/commit/759684b1b445bf238e9644ef1dc495cdc6a55dd8))
+ - **FIX**(storage,android): fix `refFromUrl()` when using firebase storage emulator. Essentially, check `10.0.2.2` domain as well. ([#12047](https://github.com/firebase/flutterfire/issues/12047)). ([cef006a6](https://github.com/firebase/flutterfire/commit/cef006a69bafeae1d3481220e2a5fb7386bdfbe3))
+ - **DOCS**: change old documentation links of packages in README files ([#12136](https://github.com/firebase/flutterfire/issues/12136)). ([24b9ac7e](https://github.com/firebase/flutterfire/commit/24b9ac7ec29fc9ca466c0941c2cff26d75b8568d))
+
+## 11.6.0
+
+ - **FEAT**: allow users to disable automatic host mapping ([#11962](https://github.com/firebase/flutterfire/issues/11962)). ([13c1ce33](https://github.com/firebase/flutterfire/commit/13c1ce333b8cd113241a1f7ac07181c1c76194bc))
+
+## 11.5.6
+
+ - **FIX**(storage,windows): fix an issue where getData function would statically allocate memory ([#12020](https://github.com/firebase/flutterfire/issues/12020)). ([7d51dbdc](https://github.com/firebase/flutterfire/commit/7d51dbdc1795ff9708dc3e60e4fb7089e0af8d36))
+
+## 11.5.5
+
+ - Update a dependency to the latest release.
+
+## 11.5.4
+
+ - Update a dependency to the latest release.
+
 ## 11.5.3
 
  - Update a dependency to the latest release.

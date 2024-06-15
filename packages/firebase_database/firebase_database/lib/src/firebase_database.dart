@@ -7,18 +7,6 @@ part of firebase_database;
 /// The entry point for accessing a Firebase Database. You can get an instance
 /// by calling `FirebaseDatabase.instance` or `FirebaseDatabase.instanceFor()`.
 class FirebaseDatabase extends FirebasePluginPlatform {
-  /// Returns an instance of [FirebaseDatabase] with the given [FirebaseApp] and/or
-  /// [databaseURL).
-  @Deprecated(
-    'Accessing FirebaseDatabase via the constructor is now deprecated. Use `.instanceFor` instead.',
-  )
-  factory FirebaseDatabase({FirebaseApp? app, String? databaseURL}) {
-    return FirebaseDatabase.instanceFor(
-      app: app ?? Firebase.app(),
-      databaseURL: databaseURL,
-    );
-  }
-
   FirebaseDatabase._({required this.app, this.databaseURL})
       : super(app.name, 'plugins.flutter.io/firebase_database') {
     if (databaseURL != null && databaseURL!.endsWith('/')) {
@@ -75,13 +63,27 @@ class FirebaseDatabase extends FirebasePluginPlatform {
   ///
   /// Note: Must be called immediately, prior to accessing FirebaseFirestore methods.
   /// Do not use with production credentials as emulator traffic is not encrypted.
-  void useDatabaseEmulator(String host, int port) {
-    _delegate.useDatabaseEmulator(host, port);
-  }
+  void useDatabaseEmulator(
+    String host,
+    int port, {
+    bool automaticHostMapping = true,
+  }) {
+    assert(host.isNotEmpty);
+    assert(!port.isNegative);
 
-  /// Returns a [DatabaseReference] accessing the root of the database.
-  @Deprecated('Deprecated in favor of calling `ref()`.')
-  DatabaseReference reference() => ref();
+    String mappedHost = host;
+
+    // Android considers localhost as 10.0.2.2 - automatically handle this for users.
+    if (defaultTargetPlatform == TargetPlatform.android && !kIsWeb) {
+      if ((mappedHost == 'localhost' || mappedHost == '127.0.0.1') &&
+          automaticHostMapping) {
+        // ignore: avoid_print
+        print('Mapping Database Emulator host "$mappedHost" to "10.0.2.2".');
+        mappedHost = '10.0.2.2';
+      }
+    }
+    _delegate.useDatabaseEmulator(mappedHost, port);
+  }
 
   /// Returns a [DatabaseReference] representing the location in the Database
   /// corresponding to the provided path.

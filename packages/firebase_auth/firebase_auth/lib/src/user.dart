@@ -593,6 +593,8 @@ class User {
   ///  - Thrown if the user's last sign-in time does not meet the security
   ///    threshold. Use [User.reauthenticateWithCredential] to resolve. This
   ///    does not apply if the user is anonymous.
+  @Deprecated(
+      'updateEmail() has been deprecated. Please use verifyBeforeUpdateEmail() instead.')
   Future<void> updateEmail(String newEmail) async {
     await _delegate.updateEmail(newEmail);
   }
@@ -639,10 +641,6 @@ class User {
   }
 
   /// Updates a user's profile data.
-  @Deprecated(
-    'Will be removed in version 2.0.0. '
-    'Use updatePhotoURL and updateDisplayName instead.',
-  )
   Future<void> updateProfile({String? displayName, String? photoURL}) {
     return _delegate.updateProfile(<String, String?>{
       'displayName': displayName,

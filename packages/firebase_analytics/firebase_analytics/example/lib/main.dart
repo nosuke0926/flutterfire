@@ -93,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
     // https://firebase.google.com/docs/reference/android/com/google/firebase/analytics/FirebaseAnalytics#public-void-logevent-string-name,-bundle-params
     await widget.analytics.logEvent(
       name: 'test_event',
-      parameters: <String, dynamic>{
+      parameters: <String, Object>{
         'string': 'string',
         'int': 42,
         'long': 12345678910,
@@ -110,14 +110,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> _testSetUserId() async {
     await widget.analytics.setUserId(id: 'some-user');
     setMessage('setUserId succeeded');
-  }
-
-  Future<void> _testSetCurrentScreen() async {
-    await widget.analytics.setCurrentScreen(
-      screenName: 'Analytics Demo',
-      screenClassOverride: 'AnalyticsDemo',
-    );
-    setMessage('setCurrentScreen succeeded');
   }
 
   Future<void> _testSetAnalyticsCollectionEnabled() async {
@@ -137,6 +129,15 @@ class _MyHomePageState extends State<MyHomePage> {
     setMessage('setUserProperty succeeded');
   }
 
+  Future<void> _testSetConsent() async {
+    await widget.analytics.setConsent(
+      adStorageConsentGranted: true,
+      adUserDataConsentGranted: true,
+      adPersonalizationSignalsConsentGranted: true,
+    );
+    setMessage('setConsent succeeded');
+  }
+
   Future<void> _testAppInstanceId() async {
     String? id = await widget.analytics.appInstanceId;
     if (id != null) {
@@ -149,6 +150,12 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> _testResetAnalyticsData() async {
     await widget.analytics.resetAnalyticsData();
     setMessage('resetAnalyticsData succeeded');
+  }
+
+  Future<void> _testInitiateOnDeviceConversionMeasurement() async {
+    await widget.analytics
+        .initiateOnDeviceConversionMeasurementWithEmailAddress('test@mail.com');
+    setMessage('initiateOnDeviceConversionMeasurement succeeded');
   }
 
   AnalyticsEventItem itemCreator() {
@@ -311,53 +318,59 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Column(
-        children: <Widget>[
-          MaterialButton(
-            onPressed: _sendAnalyticsEvent,
-            child: const Text('Test logEvent'),
-          ),
-          MaterialButton(
-            onPressed: _testAllEventTypes,
-            child: const Text('Test standard event types'),
-          ),
-          MaterialButton(
-            onPressed: _testSetUserId,
-            child: const Text('Test setUserId'),
-          ),
-          MaterialButton(
-            onPressed: _testSetCurrentScreen,
-            child: const Text('Test setCurrentScreen'),
-          ),
-          MaterialButton(
-            onPressed: _testSetAnalyticsCollectionEnabled,
-            child: const Text('Test setAnalyticsCollectionEnabled'),
-          ),
-          MaterialButton(
-            onPressed: _testSetSessionTimeoutDuration,
-            child: const Text('Test setSessionTimeoutDuration'),
-          ),
-          MaterialButton(
-            onPressed: _testSetUserProperty,
-            child: const Text('Test setUserProperty'),
-          ),
-          MaterialButton(
-            onPressed: _testAppInstanceId,
-            child: const Text('Test appInstanceId'),
-          ),
-          MaterialButton(
-            onPressed: _testResetAnalyticsData,
-            child: const Text('Test resetAnalyticsData'),
-          ),
-          MaterialButton(
-            onPressed: _setDefaultEventParameters,
-            child: const Text('Test setDefaultEventParameters'),
-          ),
-          Text(
-            _message,
-            style: const TextStyle(color: Color.fromARGB(255, 0, 155, 0)),
-          ),
-        ],
+      body: Center(
+        child: Column(
+          children: <Widget>[
+            MaterialButton(
+              onPressed: _sendAnalyticsEvent,
+              child: const Text('Test logEvent'),
+            ),
+            MaterialButton(
+              onPressed: _testAllEventTypes,
+              child: const Text('Test standard event types'),
+            ),
+            MaterialButton(
+              onPressed: _testSetUserId,
+              child: const Text('Test setUserId'),
+            ),
+            MaterialButton(
+              onPressed: _testSetAnalyticsCollectionEnabled,
+              child: const Text('Test setAnalyticsCollectionEnabled'),
+            ),
+            MaterialButton(
+              onPressed: _testSetSessionTimeoutDuration,
+              child: const Text('Test setSessionTimeoutDuration'),
+            ),
+            MaterialButton(
+              onPressed: _testSetUserProperty,
+              child: const Text('Test setUserProperty'),
+            ),
+            MaterialButton(
+              onPressed: _testAppInstanceId,
+              child: const Text('Test appInstanceId'),
+            ),
+            MaterialButton(
+              onPressed: _testResetAnalyticsData,
+              child: const Text('Test resetAnalyticsData'),
+            ),
+            MaterialButton(
+              onPressed: _testSetConsent,
+              child: const Text('Test setConsent'),
+            ),
+            MaterialButton(
+              onPressed: _setDefaultEventParameters,
+              child: const Text('Test setDefaultEventParameters'),
+            ),
+            MaterialButton(
+              onPressed: _testInitiateOnDeviceConversionMeasurement,
+              child: const Text('Test initiateOnDeviceConversionMeasurement'),
+            ),
+            Text(
+              _message,
+              style: const TextStyle(color: Color.fromARGB(255, 0, 155, 0)),
+            ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

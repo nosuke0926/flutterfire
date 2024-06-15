@@ -1,4 +1,4 @@
-[<img src="https://raw.githubusercontent.com/firebase/flutterfire/master/resources/flutter_favorite.png" width="200" />](https://flutter.dev/docs/development/packages-and-plugins/favorites)
+[<img src="https://raw.githubusercontent.com/firebase/flutterfire/master/.github/images/flutter_favorite.png" width="200" />](https://flutter.dev/docs/development/packages-and-plugins/favorites)
 
 # Firebase Core for Flutter
 
@@ -10,7 +10,7 @@ To learn more about Firebase, please visit the [Firebase website](https://fireba
 
 ## Getting Started
 
-To get started with FlutterFire, please [see the documentation](https://firebase.flutter.dev/docs/overview).
+To get started with FlutterFire, please [see the documentation](https://firebase.google.com/docs/flutter/setup?platform=ios).
 
 ## Usage
 

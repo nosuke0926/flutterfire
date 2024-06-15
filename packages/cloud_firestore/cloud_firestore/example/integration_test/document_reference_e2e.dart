@@ -71,22 +71,43 @@ void runDocumentReferenceTests() {
               await initializeTest('document-snapshot');
           Stream<DocumentSnapshot<Map<String, dynamic>>> stream =
               document.snapshots();
-          int call = 0;
+          StreamSubscription<DocumentSnapshot<Map<String, dynamic>>>?
+              subscription;
 
-          stream.listen(
+          subscription = stream.listen(
             expectAsync1(
               (DocumentSnapshot<Map<String, dynamic>> snapshot) {
-                call++;
-                if (call == 1) {
-                  expect(snapshot.exists, isFalse);
-                } else {
-                  fail('Should not have been called');
-                }
+                expect(snapshot.exists, isFalse);
               },
-              count: 1,
               reason: 'Stream should only have been called once.',
             ),
           );
+
+          addTearDown(() async {
+            await subscription?.cancel();
+          });
+        });
+
+        testWidgets('listens to a single response from cache', (_) async {
+          DocumentReference<Map<String, dynamic>> document =
+              await initializeTest('document-snapshot');
+          Stream<DocumentSnapshot<Map<String, dynamic>>> stream =
+              document.snapshots(source: ListenSource.cache);
+          StreamSubscription<DocumentSnapshot<Map<String, dynamic>>>?
+              subscription;
+
+          subscription = stream.listen(
+            expectAsync1(
+              (DocumentSnapshot<Map<String, dynamic>> snapshot) {
+                expect(snapshot.exists, isFalse);
+              },
+              reason: 'Stream should only have been called once.',
+            ),
+          );
+
+          addTearDown(() async {
+            await subscription?.cancel();
+          });
         });
 
         testWidgets('listens to multiple documents', (_) async {
@@ -172,8 +193,6 @@ void runDocumentReferenceTests() {
           fail('Should have thrown a [FirebaseException]');
         });
       },
-      // This will fail until this is resolved: https://github.com/dart-lang/sdk/issues/52572
-      skip: kIsWeb,
     );
 
     group('DocumentReference.delete()', () {
@@ -255,9 +274,7 @@ void runDocumentReferenceTests() {
             return;
           }
           fail('Should have thrown a [FirebaseException]');
-          // This will fail until this is resolved: https://github.com/dart-lang/sdk/issues/52572
         },
-        skip: kIsWeb,
       );
     });
 
@@ -320,7 +337,6 @@ void runDocumentReferenceTests() {
             equals({'foo': 'bar', 'bar': 456, 'baz': 'foo'}),
           );
         },
-        skip: kIsWeb,
       );
 
       testWidgets(
@@ -340,9 +356,7 @@ void runDocumentReferenceTests() {
             return;
           }
           fail('Should have thrown a [FirebaseException]');
-          // This will fail until this is resolved: https://github.com/dart-lang/sdk/issues/52572
         },
-        skip: kIsWeb,
       );
 
       testWidgets('set and return all possible datatypes', (_) async {
@@ -513,8 +527,6 @@ void runDocumentReferenceTests() {
             );
           }
         },
-        // This will fail until this is resolved: https://github.com/dart-lang/sdk/issues/52572
-        skip: kIsWeb,
       );
     });
 

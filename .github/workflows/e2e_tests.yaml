@@ -11,7 +11,6 @@ on:
       - 'website/**'
       - '**/example/**'
       - '**/flutterfire_ui/**'
-      - '**/cloud_firestore_odm/**'
       - '**.md'
   push:
     branches:
@@ -21,55 +20,41 @@ on:
       - 'website/**'
       - '**/example/**'
       - '**/flutterfire_ui/**'
-      - '**/cloud_firestore_odm/**'
       - '**.md'
 
 jobs:
   android:
-    runs-on: macos-13
+    runs-on: ubuntu-latest
     timeout-minutes: 45
     strategy:
+      fail-fast: false
       matrix:
         working_directory:
           ['tests', 'packages/cloud_firestore/cloud_firestore/example']
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
-      - uses: actions/setup-node@8f152de45cc393bb48ce5d89d36b731f54556e65
-        name: Install Node.js 16
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
+        name: Install Node.js 20
         with:
-          node-version: '16'
-      - uses: actions/setup-java@cd89f46ac9d01407894225f350157564c9c7cee2
+          node-version: '20'
+      - uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9
         with:
           distribution: 'temurin'
           java-version: '17'
-      - uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8
-        name: Gradle Cache
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-v4-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: ${{ runner.os }}-gradle-v4
-      - uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8
-        name: AVD Cache
-        id: avd-cache
-        with:
-          path: |
-            ~/.android/avd/*
-            ~/.android/adb*
-          key: avd
       - name: Firebase Emulator Cache
-        uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8
+        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9
         with:
           path: ~/.cache/firebase/emulators
-          key: firebase-emulators-v2-${{ github.run_id }}
-          restore-keys: firebase-emulators-v2
-      - uses: subosito/flutter-action@48cafc24713cca54bbe03cdc3a423187d413aafa
+          key: firebase-emulators-v3-${{ github.run_id }}
+          restore-keys: firebase-emulators-v3
+      - uses: subosito/flutter-action@44ac965b96f18d999802d4b807e3256d5a3f9fa1
         with:
           channel: 'stable'
           cache: true
-      - uses: bluefireteam/melos-action@dd3c344d731938d2ab2567a261f54a19a68b5f6a
+      - uses: bluefireteam/melos-action@5a8367ec4b9942d712528c398ff3f996e03bc230
         with:
           run-bootstrap: false
-          melos-version: '3.0.1'
+          melos-version: '5.3.0'
       - name: 'Bootstrap package'
         run: melos bootstrap --scope tests && melos bootstrap --scope "cloud_firestore*"
       - name: 'Install Tools'
@@ -77,50 +62,55 @@ jobs:
           sudo npm i -g firebase-tools
       - name: Start Firebase Emulator
         run: cd ./.github/workflows/scripts && ./start-firebase-emulator.sh
-      - name: Create and start emulator
-        # We use the installed SDK in the macOS image to create and start the emulator
+      - name: Enable KVM
         run: |
-          echo "List installed packages"
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --list_installed
-
-          echo "Installing system image"
-          echo "y" | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "system-images;android-33;google_apis;x86_64"
-
-          echo "Creating AVD"
-          echo "no" | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/avdmanager create avd -n test_emulator -k "system-images;android-33;google_apis;x86_64" --force
-
-          echo "Starting emulator"
-          $ANDROID_SDK_ROOT/emulator/emulator -avd test_emulator -no-audio -no-boot-anim -no-window &
-          adb wait-for-device shell 'while [[ -z $(getprop sys.boot_completed) ]]; do sleep 1; done; input keyevent 82'
-      - name: 'E2E Tests'
-        working-directory: ${{ matrix.working_directory }}
-        run: |
-          flutter test integration_test/e2e_test.dart --dart-define=CI=true
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Gradle cache
+        uses: gradle/actions/setup-gradle@v3
+      - name: AVD cache
+        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-ubuntu
+      - name: Start AVD then run E2E tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          working-directory: ${{ matrix.working_directory }}
+          script: |
+            flutter test integration_test/e2e_test.dart --dart-define=CI=true -d emulator-5554
 
   ios:
-    # Dropped down to macos-12 as macos-13 was timing out. This suspected issue:https://github.com/actions/runner-images/issues/8023
-    runs-on: macos-12
+    runs-on: macos-14
     timeout-minutes: 45
     strategy:
+      fail-fast: false
       matrix:
         working_directory:
           ['tests', 'packages/cloud_firestore/cloud_firestore/example']
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
-      - uses: actions/setup-node@8f152de45cc393bb48ce5d89d36b731f54556e65
-        name: Install Node.js 16
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
+        name: Install Node.js 20
         with:
-          node-version: '16'
-      - uses: actions/setup-java@cd89f46ac9d01407894225f350157564c9c7cee2
+          node-version: '20'
+      - uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9
         with:
           distribution: 'temurin'
           java-version: '17'
-      - uses: hendrikmuhs/ccache-action@ca3acd2731eef11f1572ccb126356c2f9298d35e
+      - uses: hendrikmuhs/ccache-action@c92f40bee50034e84c763e33b317c77adaa81c92
         name: Xcode Compile Cache
         with:
           key: ${{ runner.os }}-ios-v3
           max-size: 700M
-      - uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8
+      - uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9
         name: Pods Cache
         id: pods-cache
         with:
@@ -128,19 +118,19 @@ jobs:
           key: ${{ runner.os }}-pods-v3-${{ hashFiles('tests/ios/Podfile.lock') }}
           restore-keys: ${{ runner.os }}-ios-pods-v2
       - name: Firebase Emulator Cache
-        uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8
+        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9
         with:
           path: ~/.cache/firebase/emulators
-          key: firebase-emulators-v1-${{ github.run_id }}
-          restore-keys: firebase-emulators-v1
-      - uses: subosito/flutter-action@48cafc24713cca54bbe03cdc3a423187d413aafa
+          key: firebase-emulators-v3-${{ github.run_id }}
+          restore-keys: firebase-emulators-v3
+      - uses: subosito/flutter-action@44ac965b96f18d999802d4b807e3256d5a3f9fa1
         with:
           channel: 'stable'
           cache: true
-      - uses: bluefireteam/melos-action@dd3c344d731938d2ab2567a261f54a19a68b5f6a
+      - uses: bluefireteam/melos-action@5a8367ec4b9942d712528c398ff3f996e03bc230
         with:
           run-bootstrap: false
-          melos-version: '3.0.1'
+          melos-version: '5.3.0'
       - name: 'Bootstrap package'
         run: melos bootstrap --scope tests && melos bootstrap --scope "cloud_firestore*"
       - name: 'Install Tools'
@@ -158,13 +148,13 @@ jobs:
           flutter build ios --no-codesign --simulator --debug --target=./integration_test/e2e_test.dart --dart-define=CI=true
           ccache -s
       - name: Start Firebase Emulator
-        run: cd ./.github/workflows/scripts && ./start-firebase-emulator.sh
+        run: sudo chown -R 501:20 "/Users/runner/.npm" && cd ./.github/workflows/scripts && ./start-firebase-emulator.sh
       - name: 'E2E Tests'
         working-directory: ${{ matrix.working_directory }}
         run: |
           # Boot simulator and wait for System app to be ready.
-          # List of available simulators: https://github.com/actions/runner-images/blob/main/images/macos/macos-13-Readme.md#installed-simulators
-          SIMULATOR="iPhone 14"
+          # List of available simulators: https://github.com/actions/runner-images/blob/main/images/macos/macos-14-Readme.md#installed-simulators
+          SIMULATOR="iPhone 15"
           xcrun simctl bootstatus "$SIMULATOR" -b
           xcrun simctl logverbose "$SIMULATOR" enable
           # Sleep to allow simulator to settle.
@@ -174,28 +164,29 @@ jobs:
           flutter test integration_test/e2e_test.dart -d "$SIMULATOR" --dart-define=CI=true
 
   macos:
-    runs-on: macos-13
+    runs-on: macos-14
     timeout-minutes: 45
     strategy:
+      fail-fast: false
       matrix:
         working_directory:
           ['tests', 'packages/cloud_firestore/cloud_firestore/example']
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
-      - uses: actions/setup-node@8f152de45cc393bb48ce5d89d36b731f54556e65
-        name: Install Node.js 16
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
+        name: Install Node.js 20
         with:
-          node-version: '16'
-      - uses: actions/setup-java@cd89f46ac9d01407894225f350157564c9c7cee2
+          node-version: '20'
+      - uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9
         with:
           distribution: 'temurin'
           java-version: '17'
-      - uses: hendrikmuhs/ccache-action@ca3acd2731eef11f1572ccb126356c2f9298d35e
+      - uses: hendrikmuhs/ccache-action@c92f40bee50034e84c763e33b317c77adaa81c92
         name: Xcode Compile Cache
         with:
           key: ${{ runner.os }}-macos-v2
           max-size: 700M
-      - uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8
+      - uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9
         name: Pods Cache
         id: pods-cache
         with:
@@ -203,19 +194,19 @@ jobs:
           key: ${{ runner.os }}-pods-v2-${{ hashFiles('tests/macos/Podfile.lock') }}
           restore-keys: ${{ runner.os }}-macos-pods-v1
       - name: Cache Firebase Emulator
-        uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8
+        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9
         with:
           path: ~/.cache/firebase/emulators
-          key: firebase-emulators-v1-${{ github.run_id }}
-          restore-keys: firebase-emulators-v1
-      - uses: subosito/flutter-action@48cafc24713cca54bbe03cdc3a423187d413aafa
+          key: firebase-emulators-v3-${{ github.run_id }}
+          restore-keys: firebase-emulators-v3
+      - uses: subosito/flutter-action@44ac965b96f18d999802d4b807e3256d5a3f9fa1
         with:
           channel: 'stable'
           cache: true
-      - uses: bluefireteam/melos-action@dd3c344d731938d2ab2567a261f54a19a68b5f6a
+      - uses: bluefireteam/melos-action@5a8367ec4b9942d712528c398ff3f996e03bc230
         with:
           run-bootstrap: false
-          melos-version: '3.0.1'
+          melos-version: '5.3.0'
       - name: 'Bootstrap package'
         run: melos bootstrap --scope tests && melos bootstrap --scope "cloud_firestore*"
       - name: 'Install Tools'
@@ -233,7 +224,8 @@ jobs:
           flutter build macos --debug --target=./integration_test/e2e_test.dart --device-id=macos --dart-define=CI=true
           ccache -s
       - name: Start Firebase Emulator
-        run: cd ./.github/workflows/scripts && ./start-firebase-emulator.sh
+        # Chown the npm cache directory to the runner user to avoid permission issues
+        run: sudo chown -R 501:20 "/Users/runner/.npm" && cd ./.github/workflows/scripts && ./start-firebase-emulator.sh
       - name: 'E2E Tests'
         working-directory: ${{ matrix.working_directory }}
         run: |
@@ -243,43 +235,43 @@ jobs:
             --dart-define=CI=true
 
   web:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     timeout-minutes: 15
     strategy:
+      fail-fast: false
       matrix:
         working_directory:
           ['tests', 'packages/cloud_firestore/cloud_firestore/example']
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
-      - uses: actions/setup-node@8f152de45cc393bb48ce5d89d36b731f54556e65
-        name: Install Node.js 16
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
+        name: Install Node.js 20
         with:
-          node-version: '16'
-      - uses: actions/setup-java@cd89f46ac9d01407894225f350157564c9c7cee2
+          node-version: '20'
+      - uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9
         with:
           distribution: 'temurin'
           java-version: '17'
-      - uses: subosito/flutter-action@48cafc24713cca54bbe03cdc3a423187d413aafa
+      - uses: subosito/flutter-action@44ac965b96f18d999802d4b807e3256d5a3f9fa1
         with:
           channel: 'stable'
           cache: true
-      - uses: bluefireteam/melos-action@dd3c344d731938d2ab2567a261f54a19a68b5f6a
+      - uses: bluefireteam/melos-action@5a8367ec4b9942d712528c398ff3f996e03bc230
         with:
           run-bootstrap: false
-          melos-version: '3.0.1'
+          melos-version: '5.3.0'
       - name: 'Bootstrap package'
         run: melos bootstrap --scope tests && melos bootstrap --scope "cloud_firestore*"
       - name: 'Install Tools'
-        run: |
-          sudo npm i -g firebase-tools
+        run: sudo npm i -g firebase-tools
       - name: Cache Firebase Emulator
-        uses: actions/cache@88522ab9f39a2ea568f7027eddc7d8d8bc9d59c8
+        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9
         with:
           path: ~/.cache/firebase/emulators
-          key: firebase-emulators-v1-${{ github.run_id }}
-          restore-keys: firebase-emulators-v1
+          key: firebase-emulators-v3-${{ github.run_id }}
+          restore-keys: firebase-emulators-v3
       - name: Start Firebase Emulator
-        run: cd ./.github/workflows/scripts && ./start-firebase-emulator.sh
+        run: sudo chown -R 501:20 "/Users/runner/.npm" && cd ./.github/workflows/scripts && ./start-firebase-emulator.sh
       - name: 'E2E Tests'
         working-directory: ${{ matrix.working_directory }}
         # Web devices are not supported for the `flutter test` command yet. As a
@@ -287,31 +279,92 @@ jobs:
         # https://github.com/flutter/flutter/issues/66264
         run: |
           chromedriver --port=4444 --trace-buffer-size=100000 &
-          flutter drive \
-            --verbose-system-logs \
-            -d web-server \
-            --driver=test_driver/integration_test.dart \
-            --target=integration_test/e2e_test.dart \
-            --dart-define=CI=true
+          flutter drive --target=./integration_test/e2e_test.dart --driver=./test_driver/integration_test.dart -d chrome --dart-define=CI=true | tee output.log
+          # We have to check the output for failed tests matching the string "[E]"
+          output=$(<output.log)
+          if [[ "$output" =~ \[E\] ]]; then
+          # You will see "All tests passed." in the logs even when tests failed.
+          echo "All tests did not pass. Please check the logs for more information."
+          exit 1
+          fi
+        shell: bash
+
+  web-wasm:
+    runs-on: macos-latest
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        working_directory:
+          ['tests', 'packages/cloud_firestore/cloud_firestore/example']
+    steps:
+      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
+        name: Install Node.js 20
+        with:
+          node-version: '20'
+      - uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - uses: subosito/flutter-action@44ac965b96f18d999802d4b807e3256d5a3f9fa1
+        with:
+          # TODO: Remove this once WASM is on stable.
+          channel: 'master'
+          cache: true
+      - uses: bluefireteam/melos-action@5a8367ec4b9942d712528c398ff3f996e03bc230
+        with:
+          run-bootstrap: false
+          melos-version: '5.3.0'
+      - name: 'Bootstrap package'
+        run: melos bootstrap --scope tests && melos bootstrap --scope "cloud_firestore*"
+      - name: 'Install Tools'
+        run: sudo npm i -g firebase-tools
+      - name: Cache Firebase Emulator
+        uses: actions/cache@0c45773b623bea8c8e75f6c82b208c3cf94ea4f9
+        with:
+          path: ~/.cache/firebase/emulators
+          key: firebase-emulators-v3-${{ github.run_id }}
+          restore-keys: firebase-emulators-v3
+      - name: Start Firebase Emulator
+        run: sudo chown -R 501:20 "/Users/runner/.npm" && cd ./.github/workflows/scripts && ./start-firebase-emulator.sh
+      - name: 'E2E Tests'
+        working-directory: ${{ matrix.working_directory }}
+        # Web devices are not supported for the `flutter test` command yet. As a
+        # workaround we can use the `flutter drive` command. Tracking issue:
+        # https://github.com/flutter/flutter/issues/66264
+        run: |
+          chromedriver --port=4444 --trace-buffer-size=100000 &
+          mv ./web/wasm_index.html ./web/index.html
+          flutter drive --target=./integration_test/e2e_test.dart --driver=./test_driver/integration_test.dart -d chrome --wasm --dart-define=CI=true | tee output.log
+          # We have to check the output for failed tests matching the string "[E]"
+          output=$(<output.log)
+          if [[ "$output" =~ \[E\] ]]; then
+          # You will see "All tests passed." in the logs even when tests failed.
+          echo "All tests did not pass. Please check the logs for more information."
+          exit 1
+          fi
+        shell: bash
+      
 
   windows:
     runs-on: windows-latest
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
-      - uses: actions/setup-java@cd89f46ac9d01407894225f350157564c9c7cee2
+      - uses: actions/setup-java@99b8673ff64fbf99d8d325f52d9a5bdedb8483e9
         with:
           distribution: 'temurin'
           java-version: '17'
-      - uses: actions/setup-node@8f152de45cc393bb48ce5d89d36b731f54556e65
-        name: Install Node.js 16
+      - uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
+        name: Install Node.js 20
         with:
-          node-version: "16"
-      - uses: subosito/flutter-action@48cafc24713cca54bbe03cdc3a423187d413aafa
+          node-version: "20"
+      - uses: subosito/flutter-action@44ac965b96f18d999802d4b807e3256d5a3f9fa1
         with:
           channel: 'stable'
           cache: true
-      - uses: bluefireteam/melos-action@dd3c344d731938d2ab2567a261f54a19a68b5f6a
+      - uses: bluefireteam/melos-action@5a8367ec4b9942d712528c398ff3f996e03bc230
         with:
           run-bootstrap: false
           melos-version: '3.0.0'

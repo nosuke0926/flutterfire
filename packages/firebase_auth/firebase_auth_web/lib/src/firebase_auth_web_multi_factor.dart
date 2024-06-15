@@ -3,8 +3,6 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'dart:io';
-
 import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart';
 import 'package:firebase_auth_web/firebase_auth_web.dart';
 import 'package:firebase_auth_web/src/firebase_auth_web_user_credential.dart';
@@ -23,11 +21,9 @@ class MultiFactorWeb extends MultiFactorPlatform {
 
   @override
   Future<MultiFactorSession> getSession() async {
-    try {
-      return convertMultiFactorSession(await _webMultiFactorUser.session);
-    } catch (e) {
-      throw getFirebaseAuthException(e);
-    }
+    return convertMultiFactorSession(
+      await guardAuthExceptions(() => _webMultiFactorUser.session),
+    );
   }
 
   @override
@@ -35,15 +31,13 @@ class MultiFactorWeb extends MultiFactorPlatform {
     MultiFactorAssertionPlatform assertion, {
     String? displayName,
   }) async {
-    try {
-      final webAssertion = assertion as MultiFactorAssertionWeb;
-      return await _webMultiFactorUser.enroll(
+    final webAssertion = assertion as MultiFactorAssertionWeb;
+    await guardAuthExceptions(
+      () => _webMultiFactorUser.enroll(
         webAssertion.assertion,
         displayName,
-      );
-    } catch (e) {
-      throw getFirebaseAuthException(e);
-    }
+      ),
+    );
   }
 
   @override
@@ -58,28 +52,15 @@ class MultiFactorWeb extends MultiFactorPlatform {
       );
     }
 
-    try {
-      await _webMultiFactorUser.unenroll(
-        uidToUnenroll,
-      );
-    } catch (e) {
-      throw getFirebaseAuthException(e);
-    }
+    await guardAuthExceptions(() => _webMultiFactorUser.unenroll(
+          uidToUnenroll,
+        ));
   }
 
   @override
   Future<List<MultiFactorInfo>> getEnrolledFactors() async {
     final data = _webMultiFactorUser.enrolledFactors;
-    return data
-        .map((e) => MultiFactorInfo(
-              factorId: e.factorId,
-              enrollmentTimestamp:
-                  HttpDate.parse(e.enrollmentTime).millisecondsSinceEpoch /
-                      1000,
-              displayName: e.displayName,
-              uid: e.uid,
-            ))
-        .toList();
+    return data.map(fromInteropMultiFactorInfo).toList();
   }
 }
 
@@ -109,16 +90,15 @@ class MultiFactorResolverWeb extends MultiFactorResolverPlatform {
     MultiFactorAssertionPlatform assertion,
   ) async {
     final webAssertion = assertion as MultiFactorAssertionWeb;
+    final userCredential = await guardAuthExceptions(
+      () => _webMultiFactorResolver.resolveSignIn(webAssertion.assertion),
+    );
 
-    try {
-      return UserCredentialWeb(
-        _auth,
-        await _webMultiFactorResolver.resolveSignIn(webAssertion.assertion),
-        _webAuth,
-      );
-    } catch (e) {
-      throw getFirebaseAuthException(e);
-    }
+    return UserCredentialWeb(
+      _auth,
+      userCredential,
+      _webAuth,
+    );
   }
 }
 

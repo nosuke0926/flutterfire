@@ -4,7 +4,7 @@
 # customers of the plugin.
 cmake_minimum_required(VERSION 3.14)
 
-set(FIREBASE_SDK_VERSION "11.6.0")
+set(FIREBASE_SDK_VERSION "12.0.0")
 
 if (EXISTS $ENV{FIREBASE_CPP_SDK_DIR}/include/firebase/version.h)
     file(READ "$ENV{FIREBASE_CPP_SDK_DIR}/include/firebase/version.h" existing_version)
@@ -37,12 +37,16 @@ else()
         if(NOT status_code EQUAL 0)
             message(FATAL_ERROR "Download failed: ${download_log}")
         endif()
+    else()
+        message(STATUS "Using cached Firebase SDK zip file")
     endif()
 
     if(NOT EXISTS ${extracted_path})
         file(MAKE_DIRECTORY ${extracted_path})
         file(ARCHIVE_EXTRACT INPUT ${firebase_sdk_filename}
              DESTINATION ${extracted_path})
+    else()
+        message(STATUS "Using cached extracted Firebase SDK")
     endif()
     set(FIREBASE_CPP_SDK_DIR "${extracted_path}/firebase_cpp_sdk_windows")
 endif()
@@ -115,8 +119,9 @@ endif()
 add_subdirectory(${FIREBASE_CPP_SDK_DIR} bin/ EXCLUDE_FROM_ALL)
 target_include_directories(${PLUGIN_NAME} INTERFACE
   "${FIREBASE_CPP_SDK_DIR}/include")
-set(FIREBASE_LIBS firebase_app)
-foreach(firebase_lib IN ITEMS ${FIREBASE_LIBS})
+
+set(FIREBASE_RELEASE_PATH_LIBS firebase_app firebase_auth firebase_storage firebase_firestore)
+foreach(firebase_lib IN ITEMS ${FIREBASE_RELEASE_PATH_LIBS})
     get_target_property(firebase_lib_path ${firebase_lib} IMPORTED_LOCATION)
     string(REPLACE "Debug" "Release" firebase_lib_release_path ${firebase_lib_path})
     set_target_properties(${firebase_lib} PROPERTIES
@@ -125,6 +130,7 @@ foreach(firebase_lib IN ITEMS ${FIREBASE_LIBS})
     )
 endforeach()
 
+set(FIREBASE_LIBS firebase_app)
 set(ADDITIONAL_LIBS advapi32 ws2_32 crypt32 rpcrt4 ole32 icu)
 
 target_link_libraries(${PLUGIN_NAME} PUBLIC "${FIREBASE_LIBS}" "${ADDITIONAL_LIBS}")

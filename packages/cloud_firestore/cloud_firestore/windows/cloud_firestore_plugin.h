@@ -111,11 +111,12 @@ class CloudFirestorePlugin : public flutter::Plugin,
       bool is_collection_group, const PigeonQueryParameters& parameters,
       const PigeonGetOptions& options,
       std::function<void(ErrorOr<PigeonQuerySnapshot> reply)> result) override;
-  virtual void AggregateQueryCount(
+  virtual void AggregateQuery(
       const FirestorePigeonFirebaseApp& app, const std::string& path,
       const PigeonQueryParameters& parameters, const AggregateSource& source,
-      bool is_collection_group,
-      std::function<void(ErrorOr<double> reply)> result) override;
+      const flutter::EncodableList& queries, bool is_collection_group,
+      std::function<void(ErrorOr<flutter::EncodableList> reply)> result)
+      override;
   virtual void WriteBatchCommit(
       const FirestorePigeonFirebaseApp& app,
       const flutter::EncodableList& writes,
@@ -124,10 +125,12 @@ class CloudFirestorePlugin : public flutter::Plugin,
       const FirestorePigeonFirebaseApp& app, const std::string& path,
       bool is_collection_group, const PigeonQueryParameters& parameters,
       const PigeonGetOptions& options, bool include_metadata_changes,
+      const ListenSource& source,
       std::function<void(ErrorOr<std::string> reply)> result) override;
   virtual void DocumentReferenceSnapshot(
       const FirestorePigeonFirebaseApp& app,
       const DocumentReferenceRequest& parameters, bool include_metadata_changes,
+      const ListenSource& source,
       std::function<void(ErrorOr<std::string> reply)> result) override;
 
   static flutter::BinaryMessenger* messenger_;
@@ -142,7 +145,7 @@ class CloudFirestorePlugin : public flutter::Plugin,
   static std::map<std::string,
                   std::shared_ptr<firebase::firestore::Transaction>>
       transactions_;
-  static std::map<std::string, firebase::firestore::Firestore*>
+  static std::map<std::string, std::unique_ptr<firebase::firestore::Firestore>>
       firestoreInstances_;
 };
 

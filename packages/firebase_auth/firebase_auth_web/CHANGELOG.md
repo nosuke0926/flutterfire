@@ -1,3 +1,110 @@
+## 5.12.2
+
+ - **FIX**(auth,web): unsubscribe from stream handlers after "hot restart" ([#12908](https://github.com/firebase/flutterfire/issues/12908)). ([a76c8866](https://github.com/firebase/flutterfire/commit/a76c8866c7f62dd62764f147f114f42f4137b66d))
+ - **FIX**(auth,web): stream handlers are properly cleaned up and recreated ([#12903](https://github.com/firebase/flutterfire/issues/12903)). ([daaef12c](https://github.com/firebase/flutterfire/commit/daaef12c7cf0f403bbe2b4bc2210f3db2c33125b))
+
+## 5.12.1
+
+ - **FIX**(web): fix some casting issue on Web JS Interop ([#12852](https://github.com/firebase/flutterfire/issues/12852)). ([4b56df1c](https://github.com/firebase/flutterfire/commit/4b56df1cc187d77ef22a82688a37f1c7aba4ed40))
+
+## 5.12.0
+
+ - **FEAT**(auth): update Pigeon version to 19 ([#12828](https://github.com/firebase/flutterfire/issues/12828)). ([5e76153f](https://github.com/firebase/flutterfire/commit/5e76153fbcd337a26e83abc2b43b651ab6c501bc))
+
+## 5.11.6
+
+ - **FIX**(auth,web): get auth credential from exception and pass to user if one is available ([#12780](https://github.com/firebase/flutterfire/issues/12780)). ([39f6e7bd](https://github.com/firebase/flutterfire/commit/39f6e7bd7843178f72052ad5e08e66a5c6ba7908))
+
+## 5.11.5
+
+ - Update a dependency to the latest release.
+
+## 5.11.4
+
+ - **FIX**(web): fixing some uncorrect type casting for Web ([#12696](https://github.com/firebase/flutterfire/issues/12696)). ([471b5072](https://github.com/firebase/flutterfire/commit/471b507265a08bbc68277d3a2fdb7ef608c9efcc))
+
+## 5.11.3
+
+ - **FIX**(auth,web): fix verifyPhoneNumber by using jsify() to convert phone options to javascript ([#12681](https://github.com/firebase/flutterfire/issues/12681)). ([967aa5d2](https://github.com/firebase/flutterfire/commit/967aa5d2a86b238314ab58857999110b17bd34bc))
+ - **FIX**(auth,web): invocation of unsubscribe callback for dart2wasm compatibility. ([#12669](https://github.com/firebase/flutterfire/issues/12669)). ([2b84feb1](https://github.com/firebase/flutterfire/commit/2b84feb1b6ec32b1a3605824ed1370b08912184c))
+
+## 5.11.2
+
+ - Update a dependency to the latest release.
+
+## 5.11.1
+
+ - **FIX**(web): fix typing conversion for Maps ([#12615](https://github.com/firebase/flutterfire/issues/12615)). ([2cc16189](https://github.com/firebase/flutterfire/commit/2cc161898573736216dbf6cba25c4951e571fa13))
+ - **FIX**(auth,web): fix an issue that could prevent Recaptcha from being properly initialized ([#12589](https://github.com/firebase/flutterfire/issues/12589)). ([8ce9162c](https://github.com/firebase/flutterfire/commit/8ce9162c78d4634b9b3f9ea839f9500e1be5947f))
+
+## 5.11.0
+
+ - **FEAT**(web): remove the dependency on `package:js` in favor of `dart:js_interop` ([#12534](https://github.com/firebase/flutterfire/issues/12534)). ([d83f6327](https://github.com/firebase/flutterfire/commit/d83f632753707c974fef2ac8a7f9bf6cb8ba8758))
+
+## 5.10.1
+
+ - Update a dependency to the latest release.
+
+## 5.10.0
+
+ - **FEAT**: update `web` package to 0.5.1 ([#12469](https://github.com/firebase/flutterfire/issues/12469)). ([f5c4354a](https://github.com/firebase/flutterfire/commit/f5c4354a66377da9d231c5e3fc7e955ddb7ef8cf))
+
+## 5.9.8
+
+ - Update a dependency to the latest release.
+
+## 5.9.7
+
+ - Update a dependency to the latest release.
+
+## 5.9.6
+
+ - **REFACTOR**(auth,web): update error handling to ensure stack traces are preserved. ([#12392](https://github.com/firebase/flutterfire/issues/12392)). ([280dcb3d](https://github.com/firebase/flutterfire/commit/280dcb3d77ab5688258fe9d75fa69dd2424fda98))
+ - **FIX**(auth,web): lower SDK minimum version constraint to "3.2.0" ([#12369](https://github.com/firebase/flutterfire/issues/12369)). ([fa412b44](https://github.com/firebase/flutterfire/commit/fa412b448247224adedf2b770faeeea462f3c5d4))
+
+## 5.9.5
+
+ - **FIX**(auth,web): flutter `3.19.0` interop broke auth persistence setting. Updated the way we initialise JS Map inline with latest interop. ([#12338](https://github.com/firebase/flutterfire/issues/12338)). ([9d5480f8](https://github.com/firebase/flutterfire/commit/9d5480f8f943d095dd3ca94d4868ec75bed84b22))
+ - **FIX**(auth,web): `signInWithEmailAndPassword()` throwing with incorrect exception code ([#12310](https://github.com/firebase/flutterfire/issues/12310)). ([004f6d41](https://github.com/firebase/flutterfire/commit/004f6d4195801359583f047c1909f55205125840))
+
+## 5.9.4
+
+ - Update a dependency to the latest release.
+
+## 5.9.3
+
+ - **FIX**(auth,web): fix null safety issue in typing JS Interop for OAuthCredential ([#12270](https://github.com/firebase/flutterfire/issues/12270)). ([7de58e43](https://github.com/firebase/flutterfire/commit/7de58e438337355f51a144868a0843bdc2e73f6e))
+ - **FIX**(core,web): fix Recaptcha instantiation error ([#12268](https://github.com/firebase/flutterfire/issues/12268)). ([de2fe990](https://github.com/firebase/flutterfire/commit/de2fe99063d2919e2c109f355f3cf41afdf1f626))
+
+## 5.9.2
+
+ - **FIX**(auth,web): fix null safety issue in typing JS Interop ([#12250](https://github.com/firebase/flutterfire/issues/12250)). ([d0d30405](https://github.com/firebase/flutterfire/commit/d0d30405a895ae221603ddd158b1cb1636312fb4))
+
+## 5.9.1
+
+ - Update a dependency to the latest release.
+
+## 5.9.0
+
+ - **FEAT**(firestore,web): migrate web to js_interop to be compatible with WASM ([#12169](https://github.com/firebase/flutterfire/issues/12169)). ([57ebd529](https://github.com/firebase/flutterfire/commit/57ebd529de5def2bab1557a1bd9967ee4267c08a))
+ - **FEAT**(auth,web): migrate web to js_interop to be compatible with WASM ([#12145](https://github.com/firebase/flutterfire/issues/12145)). ([8d2df7a1](https://github.com/firebase/flutterfire/commit/8d2df7a1b2198797e9c95c45efaf21b4e5bfe766))
+
+## 5.8.13
+
+ - **FIX**(auth,web): fix typing of `getRedirectResult` on Web, preventing a crash ([#12036](https://github.com/firebase/flutterfire/issues/12036)). ([52c53f5c](https://github.com/firebase/flutterfire/commit/52c53f5c470aeca32e652cb0d477c5fc2bba7812))
+
+## 5.8.12
+
+ - Update a dependency to the latest release.
+
+## 5.8.11
+
+ - Update a dependency to the latest release.
+
+## 5.8.10
+
+ - Update a dependency to the latest release.
+
 ## 5.8.9
 
  - Update a dependency to the latest release.

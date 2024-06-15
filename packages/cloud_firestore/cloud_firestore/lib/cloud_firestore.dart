@@ -18,6 +18,7 @@ import 'package:meta/meta.dart';
 
 export 'package:cloud_firestore_platform_interface/cloud_firestore_platform_interface.dart'
     show
+        AggregateField,
         AggregateSource,
         ListEquality,
         FieldPath,
@@ -28,6 +29,7 @@ export 'package:cloud_firestore_platform_interface/cloud_firestore_platform_inte
         GetOptions,
         ServerTimestampBehavior,
         SetOptions,
+        ListenSource,
         DocumentChangeType,
         PersistenceSettings,
         Settings,
@@ -37,7 +39,11 @@ export 'package:cloud_firestore_platform_interface/cloud_firestore_platform_inte
         FieldOverrideIndex,
         Order,
         ArrayConfig,
-        QueryScope;
+        QueryScope,
+        LoadBundleTaskState,
+        average,
+        count,
+        sum;
 export 'package:firebase_core_platform_interface/firebase_core_platform_interface.dart'
     show FirebaseException;
 

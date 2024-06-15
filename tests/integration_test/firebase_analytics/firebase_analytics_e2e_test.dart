@@ -37,7 +37,7 @@ void main() {
           );
 
           final result = await FirebaseAnalytics.instance.getSessionId();
-          expect(result, isA<int>());
+          expect(result, isA<int?>());
         }
       },
     );
@@ -104,7 +104,7 @@ void main() {
         throwsA(isA<AssertionError>()),
       );
 
-      // test 2 reserved events
+      // test 3 reserved events
       await expectLater(
         FirebaseAnalytics.instance.logAdImpression(
           adPlatform: 'foo',
@@ -127,6 +127,14 @@ void main() {
           shipping: 23,
           transactionId: 'bar',
           affiliation: 'baz',
+        ),
+        completes,
+      );
+
+      await expectLater(
+        FirebaseAnalytics.instance.logScreenView(
+          screenClass: 'FooActivity',
+          screenName: 'bar',
         ),
         completes,
       );
@@ -167,6 +175,7 @@ void main() {
 
     test('setCurrentScreen', () async {
       await expectLater(
+        // ignore: deprecated_member_use
         FirebaseAnalytics.instance.setCurrentScreen(screenName: 'screen-name'),
         completes,
       );
@@ -199,23 +208,18 @@ void main() {
     test(
       'setConsent',
       () async {
-        if (kIsWeb) {
-          await expectLater(
-            FirebaseAnalytics.instance.setConsent(
-              analyticsStorageConsentGranted: false,
-              adStorageConsentGranted: true,
-            ),
-            throwsA(isA<UnimplementedError>()),
-          );
-        } else {
-          await expectLater(
-            FirebaseAnalytics.instance.setConsent(
-              analyticsStorageConsentGranted: false,
-              adStorageConsentGranted: true,
-            ),
-            completes,
-          );
-        }
+        await expectLater(
+          FirebaseAnalytics.instance.setConsent(
+            analyticsStorageConsentGranted: true,
+            adStorageConsentGranted: true,
+            adPersonalizationSignalsConsentGranted: true,
+            adUserDataConsentGranted: true,
+            functionalityStorageConsentGranted: true,
+            personalizationStorageConsentGranted: true,
+            securityStorageConsentGranted: true,
+          ),
+          completes,
+        );
       },
     );
 
@@ -280,6 +284,14 @@ void main() {
           throwsA(isA<UnimplementedError>()),
         );
       } else {
+        await expectLater(
+          FirebaseAnalytics.instance.setConsent(
+            analyticsStorageConsentGranted: false,
+            adStorageConsentGranted: false,
+          ),
+          completes,
+        );
+
         final result = await FirebaseAnalytics.instance.appInstanceId;
         expect(result, isNull);
 
@@ -295,5 +307,27 @@ void main() {
         expect(result2, isA<String>());
       }
     });
+
+    test(
+      'initiateOnDeviceConversionMeasurement',
+      () async {
+        await expectLater(
+          FirebaseAnalytics.instance
+              .initiateOnDeviceConversionMeasurementWithEmailAddress(
+            'test@mail.com',
+          ),
+          completes,
+        );
+
+        await expectLater(
+          FirebaseAnalytics.instance
+              .initiateOnDeviceConversionMeasurementWithPhoneNumber(
+            '+15555555555',
+          ),
+          completes,
+        );
+      },
+      skip: kIsWeb || defaultTargetPlatform != TargetPlatform.iOS,
+    );
   });
 }

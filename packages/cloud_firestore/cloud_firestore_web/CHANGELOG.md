@@ -1,3 +1,110 @@
+## 4.0.1
+
+ - **FIX**(firestore,web): ensure streams are removed on "hot restart" ([#12913](https://github.com/firebase/flutterfire/issues/12913)). ([c1a67e54](https://github.com/firebase/flutterfire/commit/c1a67e54894cbfb316b3445505b5803e2d041ed5))
+
+## 4.0.0
+
+> Note: This release has breaking changes.
+
+ - **FIX**(web): fix some casting issue on Web JS Interop ([#12852](https://github.com/firebase/flutterfire/issues/12852)). ([4b56df1c](https://github.com/firebase/flutterfire/commit/4b56df1cc187d77ef22a82688a37f1c7aba4ed40))
+ - **BREAKING** **REFACTOR**: bump all iOS deployment targets to iOS 13 ahead of Firebase iOS SDK `v11` breaking change ([#12872](https://github.com/firebase/flutterfire/issues/12872)). ([de0cea2c](https://github.com/firebase/flutterfire/commit/de0cea2c3c36694a76361be784255986fac84a43))
+
+## 3.12.5
+
+ - Update a dependency to the latest release.
+
+## 3.12.4
+
+ - Update a dependency to the latest release.
+
+## 3.12.3
+
+ - Update a dependency to the latest release.
+
+## 3.12.2
+
+ - **FIX**(web): fixing some uncorrect type casting for Web ([#12696](https://github.com/firebase/flutterfire/issues/12696)). ([471b5072](https://github.com/firebase/flutterfire/commit/471b507265a08bbc68277d3a2fdb7ef608c9efcc))
+
+## 3.12.1
+
+ - Update a dependency to the latest release.
+
+## 3.12.0
+
+ - **FIX**(firestore): deprecate `databaseURL` in favor of `databaseId` ([#12593](https://github.com/firebase/flutterfire/issues/12593)). ([8966f483](https://github.com/firebase/flutterfire/commit/8966f4837afe7e32a3847b7b677d787b1398b682))
+ - **FEAT**(firestore): add support for listening snapshot from cache ([#12585](https://github.com/firebase/flutterfire/issues/12585)). ([f2cef8c1](https://github.com/firebase/flutterfire/commit/f2cef8c13f590cdeda0cadbe3d85d6e246d5ad7f))
+
+## 3.11.1
+
+ - Update a dependency to the latest release.
+
+## 3.11.0
+
+ - **FEAT**(web): remove the dependency on `package:js` in favor of `dart:js_interop` ([#12534](https://github.com/firebase/flutterfire/issues/12534)). ([d83f6327](https://github.com/firebase/flutterfire/commit/d83f632753707c974fef2ac8a7f9bf6cb8ba8758))
+
+## 3.10.10
+
+ - Update a dependency to the latest release.
+
+## 3.10.9
+
+ - Update a dependency to the latest release.
+
+## 3.10.8
+
+ - Update a dependency to the latest release.
+
+## 3.10.7
+
+ - Update a dependency to the latest release.
+
+## 3.10.6
+
+ - **FIX**(firestore,web): fix an issue where hot restart would throw an error in console ([#12382](https://github.com/firebase/flutterfire/issues/12382)). ([a5dc05da](https://github.com/firebase/flutterfire/commit/a5dc05daaba8baddbc59cd22ff84954f73f225c9))
+
+## 3.10.5
+
+ - **FIX**(firestore,web): Propagate `FirebaseException` properly, fix `mergeFields` bug, fix `bytesLoaded` different type under different conditions ([#12334](https://github.com/firebase/flutterfire/issues/12334)). ([fdde75b0](https://github.com/firebase/flutterfire/commit/fdde75b02fe4bd4d40ce14798e7212eca7c8e557))
+ - **FIX**(firestore): aggregate query `average()` is `null` when collection is empty or collection doesn't exist or the property doesn't exist on docs ([#12304](https://github.com/firebase/flutterfire/issues/12304)). ([4d3b578d](https://github.com/firebase/flutterfire/commit/4d3b578dbb88da441e308179f3656822c5612ef1))
+
+## 3.10.4
+
+ - **FIX**(firestore,web): fix an issue where nested object could be incorrectly decoded from JSObjects ([#12289](https://github.com/firebase/flutterfire/issues/12289)). ([991f5bd4](https://github.com/firebase/flutterfire/commit/991f5bd416880d0a5a49e1ff466f4769d6730e77))
+
+## 3.10.3
+
+ - **FIX**(firestore,web): fix an issue where nested object could be incorrectly decoded from JSObjects ([#12272](https://github.com/firebase/flutterfire/issues/12272)). ([bd27d1d9](https://github.com/firebase/flutterfire/commit/bd27d1d9763acdff88a6a5f42142986f8643fae9))
+
+## 3.10.2
+
+ - Update a dependency to the latest release.
+
+## 3.10.1
+
+ - Update a dependency to the latest release.
+
+## 3.10.0
+
+ - **FIX**(firestore,web): update `setSettings` to allow usage of a up-to-date persistence on web ([#12041](https://github.com/firebase/flutterfire/issues/12041)). ([c9174334](https://github.com/firebase/flutterfire/commit/c917433452fb9125197c385cb121d8174cc56c20))
+ - **FEAT**(firestore,web): migrate web to js_interop to be compatible with WASM ([#12169](https://github.com/firebase/flutterfire/issues/12169)). ([57ebd529](https://github.com/firebase/flutterfire/commit/57ebd529de5def2bab1557a1bd9967ee4267c08a))
+ - **DOCS**: change old documentation links of packages in README files ([#12136](https://github.com/firebase/flutterfire/issues/12136)). ([24b9ac7e](https://github.com/firebase/flutterfire/commit/24b9ac7ec29fc9ca466c0941c2cff26d75b8568d))
+
+## 3.9.0
+
+ - **FEAT**(firestore): add support for `sum` and `average` aggregated queries ([#11757](https://github.com/firebase/flutterfire/issues/11757)). ([82af6c2f](https://github.com/firebase/flutterfire/commit/82af6c2f40160a9e2f74e2d48652003fa48bb161))
+
+## 3.8.10
+
+ - Update a dependency to the latest release.
+
+## 3.8.9
+
+ - Update a dependency to the latest release.
+
+## 3.8.8
+
+ - Update a dependency to the latest release.
+
 ## 3.8.7
 
  - Update a dependency to the latest release.

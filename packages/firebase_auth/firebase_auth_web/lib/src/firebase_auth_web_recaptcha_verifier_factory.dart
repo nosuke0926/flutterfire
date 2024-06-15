@@ -4,10 +4,11 @@
 // found in the LICENSE file.
 
 import 'dart:async';
-import 'dart:html';
+import 'dart:js_interop';
 
 import 'package:firebase_auth_platform_interface/firebase_auth_platform_interface.dart';
 import 'package:firebase_auth_web/firebase_auth_web.dart';
+import 'package:web/web.dart' as web;
 
 import 'interop/auth.dart' as auth_interop;
 import 'utils/web_utils.dart';
@@ -43,45 +44,54 @@ class RecaptchaVerifierFactoryWeb extends RecaptchaVerifierFactoryPlatform {
     RecaptchaVerifierOnExpired? onExpired,
   }) : super() {
     String element;
-    Map<String, dynamic> parameters = {};
+    Map<String, JSAny> parameters = {};
 
     if (onSuccess != null) {
-      parameters['callback'] = (resp) {
+      parameters['callback'] = ((JSObject resp) {
         onSuccess();
-      };
+      }).toJS;
     }
 
     if (onExpired != null) {
-      parameters['expired-callback'] = () {
+      parameters['expired-callback'] = (() {
         onExpired();
-      };
+      }).toJS;
     }
 
     if (onError != null) {
-      parameters['error-callback'] = (Object error) {
+      parameters['error-callback'] = ((JSObject error) {
         onError(getFirebaseAuthException(error));
-      };
+      }).toJS;
     }
 
     if (container == null || container.isEmpty) {
-      parameters['size'] = 'invisible';
-      Element? el = window.document.getElementById(_kInvisibleElementId);
+      parameters['size'] = 'invisible'.toJS;
+      web.Element? el =
+          web.window.document.getElementById(_kInvisibleElementId);
 
       // If an existing element exists, something may have already been rendered.
       if (el != null) {
         el.remove();
       }
 
-      window.document.documentElement!.children
-          .add(DivElement()..id = _kInvisibleElementId);
+      final documentElement = web.window.document.documentElement;
+
+      if (documentElement == null) {
+        throw StateError('No document element found');
+      }
+
+      final childElement = web.window.document.createElement('div');
+      childElement.id = _kInvisibleElementId;
+
+      documentElement.appendChild(childElement);
 
       element = _kInvisibleElementId;
     } else {
-      parameters['size'] = convertRecaptchaVerifierSize(size);
-      parameters['theme'] = convertRecaptchaVerifierTheme(theme);
+      parameters['size'] = convertRecaptchaVerifierSize(size).toJS;
+      parameters['theme'] = convertRecaptchaVerifierTheme(theme).toJS;
 
       assert(
-        window.document.getElementById(container) != null,
+        web.window.document.getElementById(container) != null,
         'An exception was thrown whilst creating a RecaptchaVerifier instance. No DOM element with an ID of $container could be found.',
       );
 
@@ -129,7 +139,7 @@ class RecaptchaVerifierFactoryWeb extends RecaptchaVerifierFactoryPlatform {
   @override
   void clear() {
     _delegate.clear();
-    window.document.getElementById(_kInvisibleElementId)?.remove();
+    web.window.document.getElementById(_kInvisibleElementId)?.remove();
   }
 
   @override
@@ -144,7 +154,7 @@ class RecaptchaVerifierFactoryWeb extends RecaptchaVerifierFactoryPlatform {
   @override
   Future<int> render() async {
     try {
-      return await _delegate.render() as int;
+      return await _delegate.render();
     } catch (e) {
       throw getFirebaseAuthException(e);
     }

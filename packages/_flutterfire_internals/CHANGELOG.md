@@ -1,3 +1,96 @@
+## 1.3.37
+
+ - Update a dependency to the latest release.
+
+## 1.3.36
+
+ - Update a dependency to the latest release.
+
+## 1.3.35
+
+ - Update a dependency to the latest release.
+
+## 1.3.34
+
+ - Update a dependency to the latest release.
+
+## 1.3.33
+
+ - Update a dependency to the latest release.
+
+## 1.3.32
+
+ - **FIX**(web): fix type casting for JSString in error parsing ([#12698](https://github.com/firebase/flutterfire/issues/12698)). ([93efcffb](https://github.com/firebase/flutterfire/commit/93efcffbaba854fe50c5dd26b590d8a02d6e2d4e))
+
+## 1.3.31
+
+ - Update a dependency to the latest release.
+
+## 1.3.30
+
+ - Update a dependency to the latest release.
+
+## 1.3.29
+
+ - **FIX**(web): remove remaining references to `dart:html` ([#12601](https://github.com/firebase/flutterfire/issues/12601)). ([fbffedb6](https://github.com/firebase/flutterfire/commit/fbffedb65c180d29a07436af90b36ca56e97bfe7))
+
+## 1.3.28
+
+ - Update a dependency to the latest release.
+
+## 1.3.27
+
+ - Update a dependency to the latest release.
+
+## 1.3.26
+
+ - Update a dependency to the latest release.
+
+## 1.3.25
+
+ - Update a dependency to the latest release.
+
+## 1.3.24
+
+ - Update a dependency to the latest release.
+
+## 1.3.23
+
+ - Update a dependency to the latest release.
+
+## 1.3.22
+
+ - **FIX**(firestore,web): Propagate `FirebaseException` properly, fix `mergeFields` bug, fix `bytesLoaded` different type under different conditions ([#12334](https://github.com/firebase/flutterfire/issues/12334)). ([fdde75b0](https://github.com/firebase/flutterfire/commit/fdde75b02fe4bd4d40ce14798e7212eca7c8e557))
+ - **FIX**(storage,web): fixed web stream handlers, e2e web tests, incorrect NativeError being thrown instead of FirebaseException on web ([#12319](https://github.com/firebase/flutterfire/issues/12319)). ([d32b5a93](https://github.com/firebase/flutterfire/commit/d32b5a936cfb05fbeeff199248474c23af293a3c))
+
+## 1.3.21
+
+ - Update a dependency to the latest release.
+
+## 1.3.20
+
+ - Update a dependency to the latest release.
+
+## 1.3.19
+
+ - Update a dependency to the latest release.
+
+## 1.3.18
+
+ - **FIX**(core,web): fix some JS interop that were incorrectly migrated ([#12239](https://github.com/firebase/flutterfire/issues/12239)). ([e38a510b](https://github.com/firebase/flutterfire/commit/e38a510b770068c1f2e4e515b7ed252f10ac2219))
+
+## 1.3.17
+
+ - Update a dependency to the latest release.
+
+## 1.3.16
+
+ - Update a dependency to the latest release.
+
+## 1.3.15
+
+ - Update a dependency to the latest release.
+
 ## 1.3.14
 
  - Update a dependency to the latest release.

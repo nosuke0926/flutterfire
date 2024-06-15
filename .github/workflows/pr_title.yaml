@@ -11,6 +11,6 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: amannn/action-semantic-pull-request@c3cd5d1ea3580753008872425915e343e351ab54
+      - uses: amannn/action-semantic-pull-request@cfb60706e18bc85e8aec535e3c577abe8f70378e
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}

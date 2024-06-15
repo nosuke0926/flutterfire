@@ -421,6 +421,26 @@ void main() {
 
           fail('should have thrown an error');
         });
+
+        test('should throw wrong-password ', () async {
+          // Setup
+          final email = generateRandomEmail();
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: email,
+            password: testPassword,
+          );
+
+          await FirebaseAuth.instance.signOut();
+
+          await expectLater(
+            FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: 'wrong password'),
+            throwsA(
+              isA<FirebaseAuthException>().having((e) => e.code, 'code', equals('wrong-password'))
+                  .having((e) => e.message, 'message', equals('The password is invalid or the user does not have a password.')),
+            ),
+          );
+        });
+
       }, skip: !kIsWeb && defaultTargetPlatform == TargetPlatform.windows,);
 
       group('reload()', () {
@@ -570,6 +590,7 @@ void main() {
           expect(FirebaseAuth.instance.currentUser!.email, equals(emailBefore));
 
           // Update user email
+          // ignore: deprecated_member_use
           await FirebaseAuth.instance.currentUser!.updateEmail(email);
           expect(FirebaseAuth.instance.currentUser!.email, equals(email));
         });

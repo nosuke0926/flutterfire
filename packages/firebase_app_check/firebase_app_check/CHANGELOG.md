@@ -1,3 +1,100 @@
+## 0.3.0+1
+
+ - **FIX**(app-check,web): fixed broken `onTokenChanged` and ensured it is properly cleaned up. Streams are also cleaned up on "hot restart" ([#12933](https://github.com/firebase/flutterfire/issues/12933)). ([093b5fef](https://github.com/firebase/flutterfire/commit/093b5fef8c3b8314835dc954ce02daacd1e077f4))
+ - **FIX**(firebase_app_check,ios): Replace angles with quotes in import statement ([#12929](https://github.com/firebase/flutterfire/issues/12929)). ([f2fc902b](https://github.com/firebase/flutterfire/commit/f2fc902b9e954baf9d72bd3863a85bde402d2133))
+ - **FIX**(app-check,ios): update app check to stable release ([#12924](https://github.com/firebase/flutterfire/issues/12924)). ([ced11684](https://github.com/firebase/flutterfire/commit/ced1168482c3b8e8b4746abde13649d212a503fd))
+
+## 0.3.0
+
+> Note: This release has breaking changes.
+
+ - **BREAKING** **REFACTOR**: android plugins require `minSdk 21`, auth requires `minSdk 23` ahead of android BOM `>=33.0.0` ([#12873](https://github.com/firebase/flutterfire/issues/12873)). ([52accfc6](https://github.com/firebase/flutterfire/commit/52accfc6c39d6360d9c0f36efe369ede990b7362))
+ - **BREAKING** **REFACTOR**: bump all iOS deployment targets to iOS 13 ahead of Firebase iOS SDK `v11` breaking change ([#12872](https://github.com/firebase/flutterfire/issues/12872)). ([de0cea2c](https://github.com/firebase/flutterfire/commit/de0cea2c3c36694a76361be784255986fac84a43))
+
+## 0.2.2+7
+
+ - Update a dependency to the latest release.
+
+## 0.2.2+6
+
+ - Update a dependency to the latest release.
+
+## 0.2.2+5
+
+ - Update a dependency to the latest release.
+
+## 0.2.2+4
+
+ - Update a dependency to the latest release.
+
+## 0.2.2+3
+
+ - Update a dependency to the latest release.
+
+## 0.2.2+2
+
+ - Update a dependency to the latest release.
+
+## 0.2.2+1
+
+ - **FIX**(app-check,android): fix unnecessary deprecation warning ([#12578](https://github.com/firebase/flutterfire/issues/12578)). ([805ca028](https://github.com/firebase/flutterfire/commit/805ca028d20c582e93bcebbeca3105deab365edc))
+
+## 0.2.2
+
+ - **FEAT**(android): Bump `compileSdk` version of Android plugins to latest stable (34) ([#12566](https://github.com/firebase/flutterfire/issues/12566)). ([e891fab2](https://github.com/firebase/flutterfire/commit/e891fab291e9beebc223000b133a6097e066a7fc))
+
+## 0.2.1+19
+
+ - **REFACTOR**(app_check,web): small refactor around initialisation of FirebaseAppCheckWeb ([#12474](https://github.com/firebase/flutterfire/issues/12474)). ([83aab7f8](https://github.com/firebase/flutterfire/commit/83aab7f8f6a6dde6e71765826c0e1f9aabc110a0))
+
+## 0.2.1+18
+
+ - Update a dependency to the latest release.
+
+## 0.2.1+17
+
+ - Update a dependency to the latest release.
+
+## 0.2.1+16
+
+ - Update a dependency to the latest release.
+
+## 0.2.1+15
+
+ - Update a dependency to the latest release.
+
+## 0.2.1+14
+
+ - Update a dependency to the latest release.
+
+## 0.2.1+13
+
+ - Update a dependency to the latest release.
+
+## 0.2.1+12
+
+ - Update a dependency to the latest release.
+
+## 0.2.1+11
+
+ - Update a dependency to the latest release.
+
+## 0.2.1+10
+
+ - Update a dependency to the latest release.
+
+## 0.2.1+9
+
+ - Update a dependency to the latest release.
+
+## 0.2.1+8
+
+ - Update a dependency to the latest release.
+
+## 0.2.1+7
+
+ - Update a dependency to the latest release.
+
 ## 0.2.1+6
 
  - Update a dependency to the latest release.

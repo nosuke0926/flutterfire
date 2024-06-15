@@ -24,27 +24,27 @@ void setupSecondBucketTests() {
         app: Firebase.app(),
         bucket: secondStorageBucket,
       );
-      await storage.useStorageEmulator(testEmulatorHost, testEmulatorPort);
-      final File file = await createFile('flt-ok.txt');
+      if (defaultTargetPlatform != TargetPlatform.windows) {
+        await storage.useStorageEmulator(testEmulatorHost, testEmulatorPort);
+      }
+      // Cannot putFile as it will fail on web e2e tests
+      const string = 'some text for creating new files';
       final Reference ref = storage.ref('flutter-tests').child('flt-ok.txt');
-      await ref.putFile(file);
+      await ref.putString(string);
 
       //allowable-lists-2nd-bucket
-      final File file1 = await createFile('list-1.txt');
-      final File file2 = await createFile('list-2.txt');
-      final File file3 = await createFile('list-3.txt');
       await storage
           .ref(allowableListsSecondBucket)
           .child('list-1.txt')
-          .putFile(file1);
+          .putString(string);
       await storage
           .ref(allowableListsSecondBucket)
           .child('list-2.txt')
-          .putFile(file2);
+          .putString(string);
       await storage
           .ref(allowableListsSecondBucket)
           .child('list-3.txt')
-          .putFile(file3);
+          .putString(string);
     });
 
     group('bucket', () {
@@ -455,22 +455,27 @@ void setupSecondBucketTests() {
         expect(fullMetadata.bucket, secondStorageBucket);
       });
 
-      test('errors if property does not exist', () async {
-        Reference ref = storage.ref('flutter-tests/iDoNotExist.jpeg');
+      test(
+        'errors if property does not exist',
+        () async {
+          Reference ref = storage.ref('flutter-tests/iDoNotExist.jpeg');
 
-        await expectLater(
-          () => ref.updateMetadata(SettableMetadata(contentType: 'unknown')),
-          throwsA(
-            isA<FirebaseException>()
-                .having((e) => e.code, 'code', 'object-not-found')
-                .having(
-                  (e) => e.message,
-                  'message',
-                  'No object exists at the desired reference.',
-                ),
-          ),
-        );
-      });
+          await expectLater(
+            () => ref.updateMetadata(SettableMetadata(contentType: 'unknown')),
+            throwsA(
+              isA<FirebaseException>()
+                  .having((e) => e.code, 'code', 'object-not-found')
+                  .having(
+                    (e) => e.message,
+                    'message',
+                    'No object exists at the desired reference.',
+                  ),
+            ),
+          );
+        },
+        // TODO(russellwheatley): raise issue on C++ SDK, if object does not exist, it throws "unauthorized" exception
+        skip: defaultTargetPlatform == TargetPlatform.windows,
+      );
 
       test(
         'errors if permission denied',

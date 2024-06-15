@@ -1,3 +1,122 @@
+## 5.0.1
+
+ - **FIX**(firestore,macos): add Nonull decorator to PigeonParser to remove warnings when building ([#12930](https://github.com/firebase/flutterfire/issues/12930)). ([264b7643](https://github.com/firebase/flutterfire/commit/264b764346e0f35cc11e0a2b1f8070a6036c6631))
+ - **FIX**(firestore,web): ensure streams are removed on "hot restart" ([#12913](https://github.com/firebase/flutterfire/issues/12913)). ([c1a67e54](https://github.com/firebase/flutterfire/commit/c1a67e54894cbfb316b3445505b5803e2d041ed5))
+
+## 5.0.0
+
+> Note: This release has breaking changes.
+
+ - **DOCS**(firestore): update documentation for `clearPersistence` ([#12843](https://github.com/firebase/flutterfire/issues/12843)). ([35b78f04](https://github.com/firebase/flutterfire/commit/35b78f04edd12f2319d3d6cce06c66bfdbd13d8c))
+ - **BREAKING** **REFACTOR**: android plugins require `minSdk 21`, auth requires `minSdk 23` ahead of android BOM `>=33.0.0` ([#12873](https://github.com/firebase/flutterfire/issues/12873)). ([52accfc6](https://github.com/firebase/flutterfire/commit/52accfc6c39d6360d9c0f36efe369ede990b7362))
+ - **BREAKING** **REFACTOR**: bump all iOS deployment targets to iOS 13 ahead of Firebase iOS SDK `v11` breaking change ([#12872](https://github.com/firebase/flutterfire/issues/12872)). ([de0cea2c](https://github.com/firebase/flutterfire/commit/de0cea2c3c36694a76361be784255986fac84a43))
+
+## 4.17.5
+
+ - Update a dependency to the latest release.
+
+## 4.17.4
+
+ - **FIX**(firestore,ios): fix document stream handler options. ([#12764](https://github.com/firebase/flutterfire/issues/12764)). ([786e73ca](https://github.com/firebase/flutterfire/commit/786e73ca17527493a47914c7ead1a12a4f0adde5))
+
+## 4.17.3
+
+ - **FIX**(firestore,ios): fix query stream handler options. ([#12739](https://github.com/firebase/flutterfire/issues/12739)). ([953bf929](https://github.com/firebase/flutterfire/commit/953bf929bf19e7bbb3564c69901f5a4fca5fc981))
+ - **FIX**(web): fix test for Web on WASM ([#12697](https://github.com/firebase/flutterfire/issues/12697)). ([e343df58](https://github.com/firebase/flutterfire/commit/e343df585280e0ff088eb21a7a7accb727b150ed))
+
+## 4.17.2
+
+ - Update a dependency to the latest release.
+
+## 4.17.1
+
+ - Update a dependency to the latest release.
+
+## 4.17.0
+
+ - **FIX**(firestore): remove `nanopb` version constraints from podspec ([#12632](https://github.com/firebase/flutterfire/issues/12632)). ([c899a7bc](https://github.com/firebase/flutterfire/commit/c899a7bc9cdd7b552d3c10058f4899106a4c1994))
+ - **FIX**(firestore): deprecate `databaseURL` in favor of `databaseId` ([#12593](https://github.com/firebase/flutterfire/issues/12593)). ([8966f483](https://github.com/firebase/flutterfire/commit/8966f4837afe7e32a3847b7b677d787b1398b682))
+ - **FEAT**(firestore): add support for listening snapshot from cache ([#12585](https://github.com/firebase/flutterfire/issues/12585)). ([f2cef8c1](https://github.com/firebase/flutterfire/commit/f2cef8c13f590cdeda0cadbe3d85d6e246d5ad7f))
+
+## 4.16.1
+
+ - **FIX**(firestore,android): lint warnings and deprecated API ([#12577](https://github.com/firebase/flutterfire/issues/12577)). ([1b6ef739](https://github.com/firebase/flutterfire/commit/1b6ef73935062a4fa2c43bb4ef9b6d080a3ca5b4))
+ - **FIX**(firestore,windows): improve memory management ([#12575](https://github.com/firebase/flutterfire/issues/12575)). ([7f10940b](https://github.com/firebase/flutterfire/commit/7f10940bef3ea17255c4e33663d152473874c25b))
+
+## 4.16.0
+
+ - **FEAT**(android): Bump `compileSdk` version of Android plugins to latest stable (34) ([#12566](https://github.com/firebase/flutterfire/issues/12566)). ([e891fab2](https://github.com/firebase/flutterfire/commit/e891fab291e9beebc223000b133a6097e066a7fc))
+ - **FEAT**(firestore): allow query with range and inequality filters on multiple fields ([#12564](https://github.com/firebase/flutterfire/issues/12564)). ([00ae837f](https://github.com/firebase/flutterfire/commit/00ae837fecf893d8b1eda927fb7085a7d917e671))
+
+## 4.15.10
+
+ - Update a dependency to the latest release.
+
+## 4.15.9
+
+ - Update a dependency to the latest release.
+
+## 4.15.8
+
+ - **FIX**(firestore): fix an issue that would cause FieldValue.increment to be interpreted as double ([#12444](https://github.com/firebase/flutterfire/issues/12444)). ([e9823a41](https://github.com/firebase/flutterfire/commit/e9823a415bec0a46209608fdaf856c2413d46fbf))
+
+## 4.15.7
+
+ - **FIX**(firestore): fix an issue that would cause FieldValue.increment to not work for big int ([#12426](https://github.com/firebase/flutterfire/issues/12426)). ([a776dec5](https://github.com/firebase/flutterfire/commit/a776dec5e181b2656bfc659a23514d21930b5556))
+
+## 4.15.6
+
+ - **FIX**(firestore,windows): fix compilation issue on Windows ([#12375](https://github.com/firebase/flutterfire/issues/12375)). ([f24d0a76](https://github.com/firebase/flutterfire/commit/f24d0a76ff384cf40605ae59af705b2854e53ba7))
+
+## 4.15.5
+
+ - **FIX**(firestore,web): Propagate `FirebaseException` properly, fix `mergeFields` bug, fix `bytesLoaded` different type under different conditions ([#12334](https://github.com/firebase/flutterfire/issues/12334)). ([fdde75b0](https://github.com/firebase/flutterfire/commit/fdde75b02fe4bd4d40ce14798e7212eca7c8e557))
+ - **FIX**(firestore): expose `AggregateField` type to users ([#12305](https://github.com/firebase/flutterfire/issues/12305)). ([2b83defa](https://github.com/firebase/flutterfire/commit/2b83defa84056e717bb230a7abd220f211c2e15e))
+ - **FIX**(firestore): cannot use `not-in` & `in` filters in the same query ([#12307](https://github.com/firebase/flutterfire/issues/12307)). ([e538338c](https://github.com/firebase/flutterfire/commit/e538338c7e1bef38973ee43db37f3def20a3d4b0))
+ - **FIX**(firestore): aggregate query `average()` is `null` when collection is empty or collection doesn't exist or the property doesn't exist on docs ([#12304](https://github.com/firebase/flutterfire/issues/12304)). ([4d3b578d](https://github.com/firebase/flutterfire/commit/4d3b578dbb88da441e308179f3656822c5612ef1))
+
+## 4.15.4
+
+ - **FIX**(firestore,web): fix an issue where nested object could be incorrectly decoded from JSObjects ([#12289](https://github.com/firebase/flutterfire/issues/12289)). ([991f5bd4](https://github.com/firebase/flutterfire/commit/991f5bd416880d0a5a49e1ff466f4769d6730e77))
+
+## 4.15.3
+
+ - **FIX**(firestore,web): fix an issue where nested object could be incorrectly decoded from JSObjects ([#12272](https://github.com/firebase/flutterfire/issues/12272)). ([bd27d1d9](https://github.com/firebase/flutterfire/commit/bd27d1d9763acdff88a6a5f42142986f8643fae9))
+
+## 4.15.2
+
+ - Update a dependency to the latest release.
+
+## 4.15.1
+
+ - Update a dependency to the latest release.
+
+## 4.15.0
+
+ - **FIX**(firestore): revert breaking change to where() API. `null` cannot be used for `isEqualTo` or `isNotEqualTo` in a query. ([#12164](https://github.com/firebase/flutterfire/issues/12164)). ([cff6f767](https://github.com/firebase/flutterfire/commit/cff6f7674014037688815bdbe3198dd903a4b08e))
+ - **FIX**(firestore,web): update `setSettings` to allow usage of a up-to-date persistence on web ([#12041](https://github.com/firebase/flutterfire/issues/12041)). ([c9174334](https://github.com/firebase/flutterfire/commit/c917433452fb9125197c385cb121d8174cc56c20))
+ - **FEAT**(firestore,web): migrate web to js_interop to be compatible with WASM ([#12169](https://github.com/firebase/flutterfire/issues/12169)). ([57ebd529](https://github.com/firebase/flutterfire/commit/57ebd529de5def2bab1557a1bd9967ee4267c08a))
+ - **DOCS**: change old documentation links of packages in README files ([#12136](https://github.com/firebase/flutterfire/issues/12136)). ([24b9ac7e](https://github.com/firebase/flutterfire/commit/24b9ac7ec29fc9ca466c0941c2cff26d75b8568d))
+
+## 4.14.0
+
+ - **FIX**(firestore): `transaction.get()` should throw `FirebaseException` on exception. ([#12064](https://github.com/firebase/flutterfire/issues/12064)). ([3cfc5019](https://github.com/firebase/flutterfire/commit/3cfc5019d4f9a5f3c610a44ef370541bf22cd028))
+ - **FIX**(firestore): export `LoadBundleTaskState` in `cloud_firestore` ([#12065](https://github.com/firebase/flutterfire/issues/12065)). ([97903034](https://github.com/firebase/flutterfire/commit/97903034b6bf720be141ded3eb74961323ec72f5))
+ - **FEAT**(firestore): add support for `sum` and `average` aggregated queries ([#11757](https://github.com/firebase/flutterfire/issues/11757)). ([82af6c2f](https://github.com/firebase/flutterfire/commit/82af6c2f40160a9e2f74e2d48652003fa48bb161))
+ - **FEAT**: allow users to disable automatic host mapping ([#11962](https://github.com/firebase/flutterfire/issues/11962)). ([13c1ce33](https://github.com/firebase/flutterfire/commit/13c1ce333b8cd113241a1f7ac07181c1c76194bc))
+
+## 4.13.6
+
+ - **FIX**(firestore): revert changes to `isLessThan`, `isLessThanOrEqualTo`,`isGreaterThan`, `isGreaterThanOrEqualTo` & `arrayContains`. `null` is not valid.. ([#12017](https://github.com/firebase/flutterfire/issues/12017)). ([2712ea4e](https://github.com/firebase/flutterfire/commit/2712ea4e73ab02cf2f4ac3719b41200efd2e8dc0))
+
+## 4.13.5
+
+ - Update a dependency to the latest release.
+
+## 4.13.4
+
+ - Update a dependency to the latest release.
+
 ## 4.13.3
 
  - Update a dependency to the latest release.

@@ -71,7 +71,7 @@ the request can be used to determine the user's overall decision:
 
 Note: On Android versions prior to 13, `authorizationStatus` returns
 `authorized` if the user has not disabled notifications for the app in the
-operating system settings.
+operating system settings. On Android versions 13 and above, there is no way to determine if the user has chosen whether to grant/deny permission. A `denied` value conveys an undetermined or denied permission state, and it will be up to you to track if a permission request has been made.
 
 The other properties on `NotificationSettings` return whether a specific permission is enabled, disabled or not supported on the current
 device.
@@ -160,8 +160,10 @@ Use the service worker to handle background messages.
 To get started, create a new file in the your `web` directory, and call it `firebase-messaging-sw.js`:
 
 ```js title=web/firebase-messaging-sw.js
-importScripts("https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js");
-importScripts("https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js");
+// Please see this file for the latest firebase-js-sdk version:
+// https://github.com/firebase/flutterfire/blob/master/packages/firebase_core/firebase_core_web/lib/src/firebase_sdk_version.dart
+importScripts("https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js");
+importScripts("https://www.gstatic.com/firebasejs/10.7.0/firebase-messaging-compat.js");
 
 firebase.initializeApp({
   apiKey: "...",
@@ -183,29 +185,96 @@ messaging.onBackgroundMessage((message) => {
 
 The file must import both the app and messaging SDKs, initialize Firebase and expose the `messaging` variable.
 
-Next, the worker must be registered. Within the entry file, **after** the `main.dart.js` file has loaded, register your worker:
+Next, the worker must be registered. Within the `index.html` file, register the worker by modifying the `<script>` tag which bootstraps Flutter:
 
-```js
+```html
+<script src="flutter_bootstrap.js" async>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('firebase-messaging-sw.js', {
+        scope: '/firebase-cloud-messaging-push-scope',
+      });
+    });
+  }
+</script>
+```
+
+If you are still using the old templating system, you can register the worker by modifying the `<script>` tag which bootstraps Flutter as follows:
+
+```html
 <html>
 <body>
-  ...
-  <script src="main.dart.js" type="application/javascript"></script>
   <script>
-       if ('serviceWorker' in navigator) {
-          // Service workers are supported. Use them.
-          window.addEventListener('load', function () {
-            // ADD THIS LINE
-            navigator.serviceWorker.register('/firebase-messaging-sw.js');
+      var serviceWorkerVersion = null;
+      var scriptLoaded = false;
+      function loadMainDartJs() {
+        if (scriptLoaded) {
+          return;
+        }
+        scriptLoaded = true;
+        var scriptTag = document.createElement('script');
+        scriptTag.src = 'main.dart.js';
+        scriptTag.type = 'application/javascript';
+        document.body.append(scriptTag);
+      }
 
-            // Wait for registration to finish before dropping the <script> tag.
-            // Otherwise, the browser will load the script multiple times,
-            // potentially different versions.
-            var serviceWorkerUrl = 'flutter_service_worker.js?v=' + serviceWorkerVersion;
-
-            //  ...
+      if ('serviceWorker' in navigator) {
+        // Service workers are supported. Use them.
+        window.addEventListener('load', function () {
+          // Register Firebase Messaging service worker.
+          navigator.serviceWorker.register('firebase-messaging-sw.js', {
+            scope: '/firebase-cloud-messaging-push-scope',
           });
+
+          // Wait for registration to finish before dropping the <script> tag.
+          // Otherwise, the browser will load the script multiple times,
+          // potentially different versions.
+          var serviceWorkerUrl =
+            'flutter_service_worker.js?v=' + serviceWorkerVersion;
+
+          navigator.serviceWorker.register(serviceWorkerUrl).then((reg) => {
+            function waitForActivation(serviceWorker) {
+              serviceWorker.addEventListener('statechange', () => {
+                if (serviceWorker.state == 'activated') {
+                  console.log('Installed new service worker.');
+                  loadMainDartJs();
+                }
+              });
+            }
+            if (!reg.active && (reg.installing || reg.waiting)) {
+              // No active web worker and we have installed or are installing
+              // one for the first time. Simply wait for it to activate.
+              waitForActivation(reg.installing ?? reg.waiting);
+            } else if (!reg.active.scriptURL.endsWith(serviceWorkerVersion)) {
+              // When the app updates the serviceWorkerVersion changes, so we
+              // need to ask the service worker to update.
+              console.log('New service worker available.');
+              reg.update();
+              waitForActivation(reg.installing);
+            } else {
+              // Existing service worker is still good.
+              console.log('Loading app from service worker.');
+              loadMainDartJs();
+            }
+          });
+
+          // If service worker doesn't succeed in a reasonable amount of time,
+          // fallback to plaint <script> tag.
+          setTimeout(() => {
+            if (!scriptLoaded) {
+              console.warn(
+                'Failed to load app from service worker. Falling back to plain <script> tag.'
+              );
+              loadMainDartJs();
+            }
+          }, 4000);
+        });
+      } else {
+        // Service workers not supported. Just drop the <script> tag.
+        loadMainDartJs();
       }
   </script>
+</body>
 ```
 
 Next restart your Flutter application. The worker will be registered and any background messages will be handled via this file.

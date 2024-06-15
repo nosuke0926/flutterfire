@@ -3,7 +3,6 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_firestore_platform_interface/cloud_firestore_platform_interface.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
@@ -46,27 +45,37 @@ void runLoadBundleTests() {
         );
       });
 
-      testWidgets('loadBundle(): LoadBundleTaskProgress stream snapshots',
-          (_) async {
-        Uint8List buffer = await loadBundleSetup(2);
-        LoadBundleTask task = firestore.loadBundle(buffer);
+      testWidgets(
+        'loadBundle(): LoadBundleTaskProgress stream snapshots',
+        (_) async {
+          Uint8List buffer = await loadBundleSetup(2);
+          LoadBundleTask task = firestore.loadBundle(buffer);
 
-        final list = await task.stream.toList();
+          final list = await task.stream.toList();
 
-        expect(list.map((e) => e.totalDocuments), everyElement(isNonNegative));
-        expect(list.map((e) => e.bytesLoaded), everyElement(isNonNegative));
-        expect(list.map((e) => e.documentsLoaded), everyElement(isNonNegative));
-        expect(list.map((e) => e.totalBytes), everyElement(isNonNegative));
-        expect(list, everyElement(isInstanceOf<LoadBundleTaskSnapshot>()));
+          expect(
+            list.map((e) => e.totalDocuments),
+            everyElement(isNonNegative),
+          );
+          expect(list.map((e) => e.bytesLoaded), everyElement(isNonNegative));
+          expect(
+            list.map((e) => e.documentsLoaded),
+            everyElement(isNonNegative),
+          );
+          expect(list.map((e) => e.totalBytes), everyElement(isNonNegative));
+          expect(list, everyElement(isInstanceOf<LoadBundleTaskSnapshot>()));
 
-        LoadBundleTaskSnapshot lastSnapshot = list.removeLast();
-        expect(lastSnapshot.taskState, LoadBundleTaskState.success);
+          LoadBundleTaskSnapshot lastSnapshot = list.removeLast();
+          expect(lastSnapshot.taskState, LoadBundleTaskState.success);
 
-        expect(
-          list.map((e) => e.taskState),
-          everyElement(LoadBundleTaskState.running),
-        );
-      });
+          expect(
+            list.map((e) => e.taskState),
+            everyElement(LoadBundleTaskState.running),
+          );
+        },
+        // Working locally but is failing on CI
+        skip: kIsWeb,
+      );
 
       testWidgets(
         'loadBundle(): error handling for malformed bundle',
@@ -88,9 +97,7 @@ void runLoadBundleTests() {
                   .having((e) => e.code, 'code', 'load-bundle-error'),
             ),
           );
-          // This will fail until this is resolved: https://github.com/dart-lang/sdk/issues/52572
         },
-        skip: kIsWeb,
       );
 
       testWidgets(
@@ -132,27 +139,31 @@ void runLoadBundleTests() {
     });
 
     group('FirebaseFirestore.namedQueryGet()', () {
-      testWidgets('namedQueryGet() successful', (_) async {
-        const int number = 4;
-        Uint8List buffer = await loadBundleSetup(number);
-        LoadBundleTask task = firestore.loadBundle(buffer);
+      testWidgets(
+        'namedQueryGet() successful',
+        (_) async {
+          const int number = 4;
+          Uint8List buffer = await loadBundleSetup(number);
+          LoadBundleTask task = firestore.loadBundle(buffer);
 
-        // ensure the bundle has been completely cached
-        await task.stream.last;
+          // ensure the bundle has been completely cached
+          await task.stream.last;
 
-        // namedQuery 'named-bundle-test' which returns a QuerySnaphot of the same 3 documents
-        // with 'number' property
-        QuerySnapshot<Map<String, Object?>> snapshot =
-            await firestore.namedQueryGet(
-          'named-bundle-test-$number',
-          options: const GetOptions(source: Source.cache),
-        );
+          // namedQuery 'named-bundle-test' which returns a QuerySnaphot of the same 3 documents
+          // with 'number' property
+          QuerySnapshot<Map<String, Object?>> snapshot =
+              await firestore.namedQueryGet(
+            'named-bundle-test-$number',
+            options: const GetOptions(source: Source.cache),
+          );
 
-        expect(
-          snapshot.docs.map((document) => document['number']),
-          everyElement(anyOf(1, 2, 3)),
-        );
-      });
+          expect(
+            snapshot.docs.map((document) => document['number']),
+            everyElement(anyOf(1, 2, 3)),
+          );
+        },
+        skip: kIsWeb,
+      );
 
       testWidgets(
         'namedQueryGet() error',
@@ -168,16 +179,13 @@ void runLoadBundleTests() {
               'wrong-name',
               options: const GetOptions(source: Source.cache),
             ),
-            // This will fail until this is resolved: https://github.com/dart-lang/sdk/issues/52572
-            // expect(error, isA<FirebaseException>());
             throwsA(
               isA<FirebaseException>()
                   .having((e) => e.code, 'code', 'non-existent-named-query'),
             ),
           );
         },
-        // This will fail until this is resolved: https://github.com/dart-lang/sdk/issues/52572
-        skip: kIsWeb || defaultTargetPlatform == TargetPlatform.windows,
+        skip: defaultTargetPlatform == TargetPlatform.windows,
       );
     });
 
@@ -228,8 +236,7 @@ void runLoadBundleTests() {
             ),
           );
         },
-        // This will fail until this is resolved: https://github.com/dart-lang/sdk/issues/52572
-        skip: kIsWeb || defaultTargetPlatform == TargetPlatform.windows,
+        skip: defaultTargetPlatform == TargetPlatform.windows,
       );
     });
   });

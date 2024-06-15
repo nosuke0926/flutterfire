@@ -96,6 +96,27 @@ enum class Source {
   cache = 2
 };
 
+// The listener retrieves data and listens to updates from the local Firestore
+// cache only. If the cache is empty, an empty snapshot will be returned.
+// Snapshot events will be triggered on cache updates, like local mutations or
+// load bundles.
+//
+// Note that the data might be stale if the cache hasn't synchronized with
+// recent server-side changes.
+enum class ListenSource {
+  // The default behavior. The listener attempts to return initial snapshot from
+  // cache and retrieve up-to-date snapshots from the Firestore server.
+  // Snapshot events will be triggered on local mutations and server side
+  // updates.
+  defaultSource = 0,
+  // The listener retrieves data and listens to updates from the local Firestore
+  // cache only.
+  // If the cache is empty, an empty snapshot will be returned.
+  // Snapshot events will be triggered on cache updates, like local mutations or
+  // load bundles.
+  cache = 1
+};
+
 enum class ServerTimestampBehavior {
   // Return null for [FieldValue.serverTimestamp()] values that have not yet
   none = 0,
@@ -121,6 +142,8 @@ enum class PigeonTransactionType {
   set = 2,
   deleteType = 3
 };
+
+enum class AggregateType { count = 0, sum = 1, average = 2 };
 
 // Generated class from Pigeon that represents data sent in messages.
 class PigeonFirebaseSettings {
@@ -523,6 +546,64 @@ class PigeonQueryParameters {
   std::optional<flutter::EncodableMap> filters_;
 };
 
+// Generated class from Pigeon that represents data sent in messages.
+class AggregateQuery {
+ public:
+  // Constructs an object setting all non-nullable fields.
+  explicit AggregateQuery(const AggregateType& type);
+
+  // Constructs an object setting all fields.
+  explicit AggregateQuery(const AggregateType& type, const std::string* field);
+
+  const AggregateType& type() const;
+  void set_type(const AggregateType& value_arg);
+
+  const std::string* field() const;
+  void set_field(const std::string_view* value_arg);
+  void set_field(std::string_view value_arg);
+
+ private:
+  static AggregateQuery FromEncodableList(const flutter::EncodableList& list);
+  flutter::EncodableList ToEncodableList() const;
+  friend class FirebaseFirestoreHostApi;
+  friend class FirebaseFirestoreHostApiCodecSerializer;
+  AggregateType type_;
+  std::optional<std::string> field_;
+};
+
+// Generated class from Pigeon that represents data sent in messages.
+class AggregateQueryResponse {
+ public:
+  // Constructs an object setting all non-nullable fields.
+  explicit AggregateQueryResponse(const AggregateType& type);
+
+  // Constructs an object setting all fields.
+  explicit AggregateQueryResponse(const AggregateType& type,
+                                  const std::string* field,
+                                  const double* value);
+
+  const AggregateType& type() const;
+  void set_type(const AggregateType& value_arg);
+
+  const std::string* field() const;
+  void set_field(const std::string_view* value_arg);
+  void set_field(std::string_view value_arg);
+
+  const double* value() const;
+  void set_value(const double* value_arg);
+  void set_value(double value_arg);
+
+ private:
+  static AggregateQueryResponse FromEncodableList(
+      const flutter::EncodableList& list);
+  flutter::EncodableList ToEncodableList() const;
+  friend class FirebaseFirestoreHostApi;
+  friend class FirebaseFirestoreHostApiCodecSerializer;
+  AggregateType type_;
+  std::optional<std::string> field_;
+  std::optional<double> value_;
+};
+
 class FirebaseFirestoreHostApiCodecSerializer
     : public cloud_firestore_windows::FirestoreCodec {
  public:
@@ -613,11 +694,11 @@ class FirebaseFirestoreHostApi {
       bool is_collection_group, const PigeonQueryParameters& parameters,
       const PigeonGetOptions& options,
       std::function<void(ErrorOr<PigeonQuerySnapshot> reply)> result) = 0;
-  virtual void AggregateQueryCount(
+  virtual void AggregateQuery(
       const FirestorePigeonFirebaseApp& app, const std::string& path,
       const PigeonQueryParameters& parameters, const AggregateSource& source,
-      bool is_collection_group,
-      std::function<void(ErrorOr<double> reply)> result) = 0;
+      const flutter::EncodableList& queries, bool is_collection_group,
+      std::function<void(ErrorOr<flutter::EncodableList> reply)> result) = 0;
   virtual void WriteBatchCommit(
       const FirestorePigeonFirebaseApp& app,
       const flutter::EncodableList& writes,
@@ -626,10 +707,12 @@ class FirebaseFirestoreHostApi {
       const FirestorePigeonFirebaseApp& app, const std::string& path,
       bool is_collection_group, const PigeonQueryParameters& parameters,
       const PigeonGetOptions& options, bool include_metadata_changes,
+      const ListenSource& source,
       std::function<void(ErrorOr<std::string> reply)> result) = 0;
   virtual void DocumentReferenceSnapshot(
       const FirestorePigeonFirebaseApp& app,
       const DocumentReferenceRequest& parameters, bool include_metadata_changes,
+      const ListenSource& source,
       std::function<void(ErrorOr<std::string> reply)> result) = 0;
 
   // The codec used by FirebaseFirestoreHostApi.
