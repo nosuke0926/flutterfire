@@ -1,3 +1,15 @@
+## 5.12.5
+
+ - Update a dependency to the latest release.
+
+## 5.12.4
+
+ - **FIX**(auth,web): ensure exact same streams are not unsubscribed ([#13033](https://github.com/firebase/flutterfire/issues/13033)). ([111f5f64](https://github.com/firebase/flutterfire/commit/111f5f647b0b3d9b6c932a6e491a22602d71197c))
+
+## 5.12.3
+
+ - Update a dependency to the latest release.
+
 ## 5.12.2
 
  - **FIX**(auth,web): unsubscribe from stream handlers after "hot restart" ([#12908](https://github.com/firebase/flutterfire/issues/12908)). ([a76c8866](https://github.com/firebase/flutterfire/commit/a76c8866c7f62dd62764f147f114f42f4137b66d))

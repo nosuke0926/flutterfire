@@ -1,3 +1,17 @@
+## 5.1.3
+
+ - **DOCS**(auth): add information about error codes for email/password functions ([#13100](https://github.com/firebase/flutterfire/issues/13100)). ([aeafc356](https://github.com/firebase/flutterfire/commit/aeafc356953a0531003f765e766ffcff2387401d))
+
+## 5.1.2
+
+ - **DOCS**(auth): add information about error codes for `verifyBeforeUpdateEmail` ([#13036](https://github.com/firebase/flutterfire/issues/13036)). ([8ef7421d](https://github.com/firebase/flutterfire/commit/8ef7421d6a524938087769537ac70ec249096ed4))
+
+## 5.1.1
+
+ - **FIX**(auth,apple): bug with cached `AuthCredential`, hash key was producing different value ([#12957](https://github.com/firebase/flutterfire/issues/12957)). ([ef0077e3](https://github.com/firebase/flutterfire/commit/ef0077e37744360264eb60d6eea4359a5cc13227))
+ - **FIX**(auth,windows): fix a crash that could happen when using `sendEmailVerification` or `sendPasswordResetEmail` ([#12946](https://github.com/firebase/flutterfire/issues/12946)). ([a1008290](https://github.com/firebase/flutterfire/commit/a100829087dbf83ea59e73c3811d87b67e2a4012))
+ - **DOCS**: Update documentation for auth/user-not-found exception to reflect email enumeration protection ([#12964](https://github.com/firebase/flutterfire/issues/12964)). ([125f8209](https://github.com/firebase/flutterfire/commit/125f820971331ec75e7fe59cff3b296c42c7d8f3))
+
 ## 5.1.0
 
  - **FIX**(auth,ios): fix the parsing of an error that could specifically happen when using MicrosoftProvider ([#12920](https://github.com/firebase/flutterfire/issues/12920)). ([3b415e64](https://github.com/firebase/flutterfire/commit/3b415e641e6107b131a170277bbc1fa0e2908e27))

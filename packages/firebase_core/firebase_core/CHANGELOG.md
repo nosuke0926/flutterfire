@@ -1,3 +1,15 @@
+## 3.3.0
+
+ - **FEAT**: bump iOS SDK to version 10.29.0 ([#13113](https://github.com/firebase/flutterfire/issues/13113)). ([45fa2f58](https://github.com/firebase/flutterfire/commit/45fa2f589abe60a4bf06ac5fd64895c7df94c19c))
+
+## 3.2.0
+
+ - **FEAT**: bump Firebase iOS SDK to `10.28.0` ([#12999](https://github.com/firebase/flutterfire/issues/12999)). ([e7bd7882](https://github.com/firebase/flutterfire/commit/e7bd7882d213cf291a2fbd49acc81c03b92df746))
+
+## 3.1.1
+
+ - **FIX**(auth,windows): fix a crash that could happen when using `sendEmailVerification` or `sendPasswordResetEmail` ([#12946](https://github.com/firebase/flutterfire/issues/12946)). ([a1008290](https://github.com/firebase/flutterfire/commit/a100829087dbf83ea59e73c3811d87b67e2a4012))
+
 ## 3.1.0
 
  - **FEAT**: add support for demo project ([#11973](https://github.com/firebase/flutterfire/issues/11973)). ([859ec1dd](https://github.com/firebase/flutterfire/commit/859ec1dd4424c422bbdf96617a77d123d8b1f409))

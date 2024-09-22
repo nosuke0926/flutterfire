@@ -1,3 +1,15 @@
+## 0.2.5+40
+
+ - Update a dependency to the latest release.
+
+## 0.2.5+39
+
+ - Update a dependency to the latest release.
+
+## 0.2.5+38
+
+ - Update a dependency to the latest release.
+
 ## 0.2.5+37
 
  - Update a dependency to the latest release.
